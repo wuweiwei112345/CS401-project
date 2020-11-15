@@ -13,6 +13,8 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 	private static final int DEFAULT_MAX_SIZE = 10;
 	private Object[] elements;
 	private int elementsNum = 0;
+	private boolean found;
+	private int location;
 	
 	public ArrayBoundedListImpl() {
 		elements = new Object[DEFAULT_MAX_SIZE];
@@ -38,16 +40,23 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 
 	@Override
 	public T search(T target) {
-		//Get get method in this class
-		return this.find(target);
+		//Try find the target
+		this.find(target);
+		if(this.found) {
+			//The target element is found,return it.
+			return (T)elements[this.location];
+		}else {
+			//Return null
+			return null;
+		}
 	}
 
 	@Override
 	public boolean contoins(T target) {
-		//Get get method in this class
-		T element = this.find(target);
-		//return true or false
-		return !(element == null);
+		//Try find the target
+		this.find(target);
+		//Return the result
+		return this.found;
 	}
 	
 	/**
@@ -55,7 +64,9 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 	 * @param target
 	 * @return target data
 	 */
-	public T find(T target) {
+	public void find(T target) {
+		this.found = false;
+		this.location = -1;
 		if(!this.isEmpty()) {
 			//The list is empty
 			int index = 0;
@@ -66,13 +77,12 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 				T element = ((T)elements[index]);
 				if(element.equals(target)) {
 					//Find is success and return the element object.
-					return element;
+					this.found = true;
+					this.location = index;
 				}
 				index++;
 			}
 		}
-		//When find is fail return null.
-		return null;
 	}
 
 	@Override
@@ -81,21 +91,14 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 			//The list is empty
 			throw new UnderflowException("The list is empty!");
 		}
-		//The list is empty
-		int index = 0;
-		int arrNum = this.elementsNum;
-		//Loop and find target element
-		while(index < arrNum) {
-			//Get element of array by index
-			T element = ((T)elements[index]);
-			if(element.equals(target)) {
-				elements[index] = elements[arrNum - 1];
-				this.elementsNum--;
-				return true;
-			}
-			index++;
+		//Try find the target
+		this.find(target);
+		if(this.found) {
+			//The target element is found,delete it.
+			this.elements[this.location] = this.elements[this.elementsNum - 1];
+			this.elementsNum--;
 		}
-		return false;
+		return this.found;
 	}
 
 	@Override
