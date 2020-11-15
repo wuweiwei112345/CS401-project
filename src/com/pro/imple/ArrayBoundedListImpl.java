@@ -44,7 +44,7 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 		this.find(target);
 		if(this.found) {
 			//The target element is found,return it.
-			return (T)elements[this.location];
+			return (T)this.elements[this.location];
 		}else {
 			//Return null
 			return null;
@@ -74,7 +74,7 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 			//Loop and find target element
 			while(index < arrNum) {
 				//Get element of array by index
-				T element = ((T)elements[index]);
+				T element = ((T)this.elements[index]);
 				if(element.equals(target)) {
 					//Find is success and return the element object.
 					this.found = true;
@@ -103,7 +103,7 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 
 	@Override
 	public boolean isFull() {
-		return (this.elementsNum == elements.length);
+		return (this.elementsNum == this.elements.length);
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 			//Loop and find target element
 			while(index < arrNum) {
 				//Get element and append into the sb variable
-				sb.append(elements[index]);
+				sb.append(this.elements[index]);
 				index++;
 			}
 		}
