@@ -5,10 +5,10 @@ import com.pro.exception.UnderflowException;
 import com.pro.inter.ListInterface;
 
 /**
- * @describe The implements is array-based's bounded list
+ * @describe The implements is array-based's bounded sorted list
  * @author wuwei
  */
-public class ArrayBoundedListImpl<T> implements ListInterface<T> {
+public class ArrayBoundedListSortedImpl<T> implements ListInterface<T> {
 
 	@Override
 	public boolean add(T element) throws OverflowException {
