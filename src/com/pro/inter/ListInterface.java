@@ -5,7 +5,7 @@ import com.pro.exception.UnderflowException;
 
 /**
  * @describe interface of list
- * @author wuwei
+ * @author Wei Wu
  */
 public interface ListInterface<T> {
 

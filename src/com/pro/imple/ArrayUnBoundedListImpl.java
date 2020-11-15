@@ -6,7 +6,7 @@ import com.pro.inter.ListInterface;
 
 /**
  * @describe The implements is array-based's unbounded list
- * @author wuwei
+ * @author Wei Wu
  */
 public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 

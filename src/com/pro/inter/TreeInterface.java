@@ -2,7 +2,7 @@ package com.pro.inter;
 
 /**
  * @describe Ê÷½Ó¿Ú
- * @author wuwei
+ * @author Wei Wu
  */
 public interface TreeInterface {
 

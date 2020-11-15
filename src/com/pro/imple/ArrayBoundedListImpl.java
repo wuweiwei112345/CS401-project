@@ -6,7 +6,7 @@ import com.pro.inter.ListInterface;
 
 /**
  * @describe The implements is array-based's bounded list
- * @author wuwei
+ * @author Wei Wu
  */
 public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 	

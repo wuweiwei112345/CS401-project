@@ -6,7 +6,7 @@ import com.pro.inter.ListInterface;
 
 /**
  * @describe The implements is array-based's bounded sorted list
- * @author wuwei
+ * @author Wei Wu
  */
 public class ArrayBoundedListSortedImpl<T> implements ListInterface<T> {
 
