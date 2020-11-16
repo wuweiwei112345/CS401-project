@@ -10,46 +10,154 @@ import com.pro.inter.ListInterface;
  */
 public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 
+	private static final int INITIAL_CAPACITY = 100;
+	private Object[] elements;
+	private int elementsNum = 0;
+	private boolean found;
+	private int location;
+	
+	public ArrayUnBoundedListImpl() {
+		this.elements = new Object[INITIAL_CAPACITY];
+	}
+	
+	public ArrayUnBoundedListImpl(int capacity) {
+		this.elements = new Object[capacity];
+	}
+	
 	@Override
-	public boolean add(Object element) throws OverflowException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean add(T element) throws OverflowException {
+		if(this.elementsNum == this.elements.length) {
+			//Expand capacity
+			this.capacity();
+		}
+		//The element data into elementsNum of elements
+		this.elements[elementsNum] = element;
+		//Additional element number
+		this.elementsNum++;
+		//return true
+		return true;
+	}
+	
+	/**
+	 * Expand capacity for elements.
+	 */
+	private void capacity() {
+		//Create a new array
+		Object[] newElements = new Object[this.getNewArraySize()];
+		Object[] elements = this.elements;
+		//Copy the elements's data into the newElements
+		int elementsLen = elements.length;
+		//Loop and find target element
+		for(int i = 0 ; i < elementsLen ; i++) {
+			newElements[i] = elements[i];
+		}
+		//The newElements is this elements
+		this.elements = newElements;
+	}
+	
+	/**
+	 * Get new elements size.
+	 */
+	private int getNewArraySize() {
+		int length = this.elements.length; 
+		int newSize = (int) (length + length * 0.5);
+		return newSize;
 	}
 
 	@Override
-	public Object search(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+	public T search(T target) {
+		//Try find the target
+		this.find(target);
+		if(this.found) {
+			//The target element is found,return it.
+			return (T)this.elements[this.location];
+		}else {
+			//Return null
+			return null;
+		}
 	}
 
 	@Override
-	public boolean contoins(Object target) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean contoins(T target) {
+		//Try find the target
+		this.find(target);
+		//Return the result
+		return this.found;
+	}
+	
+	/**
+	 * Get a element data by target element.(The method's complexity is O(N))
+	 * @param target
+	 * @return target data
+	 */
+	public void find(T target) {
+		this.found = false;
+		this.location = 0;
+		if(!this.isEmpty()) {
+			//The list is empty
+			int index = 0;
+			int arrNum = this.elementsNum;
+			//Loop and find target element
+			while(index < arrNum) {
+				//Get element of array by index
+				T element = ((T)this.elements[index]);
+				if(element.equals(target)) {
+					//Find is success and return the element object.
+					this.found = true;
+					this.location = index;
+				}
+				index++;
+			}
+		}
 	}
 
 	@Override
-	public boolean remove(Object target) throws UnderflowException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean remove(T target) throws UnderflowException {
+		if(this.isEmpty()) {
+			//The list is empty
+			throw new UnderflowException("The list is empty!");
+		}
+		//Try find the target
+		this.find(target);
+		if(this.found) {
+			//The target element is found,delete it.
+			this.elements[this.location] = this.elements[this.elementsNum - 1];
+			this.elementsNum--;
+		}
+		return this.found;
 	}
 
 	@Override
 	public boolean isFull() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return (this.elementsNum == 0);
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.elementsNum;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer("");
+		if(!this.isEmpty()) {
+			//The list is empty
+			int index = 0;
+			int arrNum = this.elementsNum;
+			//Loop and find target element
+			while(index < arrNum) {
+				//Get element and append into the sb variable
+				sb.append(this.elements[index]);
+				index++;
+			}
+		}
+		//Return the string of sb
+		return sb.toString();
 	}
 
 }
