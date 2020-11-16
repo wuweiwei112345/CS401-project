@@ -9,6 +9,10 @@ import java.util.List;
  */
 public class DataCountEntity {
 	
+	private static final String DATA_RESULT_TIME_STRING_TEMPLATE = "Execution of ${num},time:${time} microsecond!";
+	private static final String DATA_RESULT_AVGTIME_STRING_TEMPLATE = "Avg time is:${avgtime} microsecond!";
+	private static final String DATA_RESULT_BIG_O_STRING_TEMPLATE = "The complexity is:${O}";
+	
 	private String dataStructureName;
 	private List<Long> dataCountList;
 	
@@ -22,6 +26,17 @@ public class DataCountEntity {
 		Long dataCountTotal = 0L;
 		for(Long countData : dataCountList) {
 			dataCountTotal += countData;
+		}
+		Long avg = dataCountTotal / dataCountList.size();
+		return avg;
+	}
+	
+	public String createResultToString() {
+		StringBuffer sb = new StringBuffer();
+		List<Long> dataCountList = this.dataCountList;
+		Long dataCountTotal = 0L;
+		for(Long countData : dataCountList) {
+			sb.append(DATA_RESULT_TIME_STRING_TEMPLATE.replace("${num}", ""));
 		}
 		Long avg = dataCountTotal / dataCountList.size();
 		return avg;
