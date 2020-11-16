@@ -1,11 +1,11 @@
 package com.pro.test;
 
-import com.pro.imple.ArrayUnBoundedListImpl;
+import com.pro.imple.ArrayUnBoundedListSortedImpl;
 
 public class DoTest {
 
 	public static void main(String[] args) {
-		ArrayUnBoundedListImpl<String> list = new ArrayUnBoundedListImpl<String>(10);
+		ArrayUnBoundedListSortedImpl<String> list = new ArrayUnBoundedListSortedImpl<String>(10);
 		list.add("a");
 		list.add("b");
 		list.add("c");
