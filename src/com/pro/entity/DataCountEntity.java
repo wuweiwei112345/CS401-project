@@ -1,6 +1,7 @@
 package com.pro.entity;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @describe Data count entity
@@ -9,27 +10,29 @@ import java.util.Map;
 public class DataCountEntity {
 	
 	private String dataStructureName;
-	private Map<String,String> dataCountMap;
+	private List<Long> dataCountList;
 	
-	public DataCountEntity(String dataStructureName,Map<String,String> dataCountMap) {
+	public DataCountEntity(String dataStructureName,int dataCountMaxNum) {
 		this.dataStructureName = dataStructureName;
-		this.dataCountMap = dataCountMap;
+		this.dataCountList = new ArrayList<Long>(dataCountMaxNum);
+	}
+	
+	public Long avgDataCount() {
+		List<Long> dataCountList = this.dataCountList;
+		Long dataCountTotal = 0L;
+		for(Long countData : dataCountList) {
+			dataCountTotal += countData;
+		}
+		Long avg = dataCountTotal / dataCountList.size();
+		return avg;
 	}
 
 	public String getDataStructureName() {
 		return dataStructureName;
 	}
 
-	public void setDataStructureName(String dataStructureName) {
-		this.dataStructureName = dataStructureName;
-	}
-
-	public Map<String, String> getDataCountMap() {
-		return dataCountMap;
-	}
-
-	public void setDataCountMap(Map<String, String> dataCountMap) {
-		this.dataCountMap = dataCountMap;
+	public List<Long> getDataCountList() {
+		return dataCountList;
 	}
 
 }
