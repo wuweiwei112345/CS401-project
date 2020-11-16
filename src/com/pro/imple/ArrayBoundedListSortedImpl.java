@@ -8,48 +8,139 @@ import com.pro.inter.ListInterface;
  * @describe The implements is array-based's bounded sorted list
  * @author Wei Wu
  */
-public class ArrayBoundedListSortedImpl<T> implements ListInterface<T> {
+public class ArrayBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
 
+	private static final int DEFAULT_MAX_SIZE = 10;
+	private Object[] elements;
+	private int elementsNum = 0;
+	private boolean found;
+	private int location;
+	
+	public ArrayBoundedListSortedImpl() {
+		this.elements = new Object[DEFAULT_MAX_SIZE];
+	}
+	
+	public ArrayBoundedListSortedImpl(int size) {
+		this.elements = new Object[size];
+	}
+	
 	@Override
 	public boolean add(T element) throws OverflowException {
-		// TODO Auto-generated method stub
-		return false;
+		if(this.isFull()) {
+			//The list is full
+			throw new OverflowException("The list is full!");
+		}
+		//Find location index of add
+		this.find(element);
+		//Loop and move element of after of location index
+		for(int i = this.elementsNum - 1 ; i >= this.location ; i--) {
+			this.elements[i + 1] = this.elements[i];
+			this.elements[i] = null;
+		}
+		//Add this element into location + 1
+		this.elements[this.location] = element;
+		//Additional element number
+		this.elementsNum++;
+		//Return true
+		return true;
 	}
 
 	@Override
 	public T search(T target) {
-		// TODO Auto-generated method stub
-		return null;
+		//Find location index by target
+		this.find(target);
+		if(this.found) {
+			//Get element by this location
+			return (T)elements[this.location];
+		}else {
+			return null;
+		}
 	}
 
 	@Override
 	public boolean contoins(T target) {
-		// TODO Auto-generated method stub
-		return false;
+		//Find by target
+		this.find(target);
+		//Return result
+		return this.found;
 	}
 
 	@Override
 	public boolean remove(T target) throws UnderflowException {
-		// TODO Auto-generated method stub
-		return false;
+		if(this.isEmpty()) {
+			//The list is empty
+			throw new UnderflowException("The list is empty!");
+		}
+		//Try find the target
+		this.find(target);
+		if(this.found) {
+			//The target element is found,delete it.
+			this.elements[this.location] = this.elements[this.elementsNum - 1];
+			this.elementsNum--;
+		}
+		return this.found;
+	}
+	
+	/**
+	 * Get a element data by target element.(The method's complexity is O(N))
+	 * @param target
+	 * @return target data
+	 */
+	public void find(T target) {
+		this.found = false;
+		this.location = 0;
+		if(!this.isEmpty()) {
+			//The list is empty,binary search
+			int first = 0;
+			int last = this.elementsNum - 1;
+			int middleIndex = 0;
+			while(first <= last) {
+				middleIndex = (first + last) / 2;
+				if(target.compareTo((T)this.elements[middleIndex]) < 0) {
+					last = middleIndex - 1;
+				}else if(target.compareTo((T)this.elements[middleIndex]) > 0) {
+					first = middleIndex + 1;
+					this.location = middleIndex + 1;
+				}else {
+					this.location = middleIndex;
+					this.found = true;
+					break;
+				}
+			}
+		}
 	}
 
 	@Override
 	public boolean isFull() {
-		// TODO Auto-generated method stub
-		return false;
+		return (this.elementsNum == this.elements.length);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return (this.elementsNum == 0);
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.elementsNum;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer("");
+		if(!this.isEmpty()) {
+			//The list is empty
+			int index = 0;
+			int arrNum = this.elementsNum;
+			//Loop and find target element
+			while(index < arrNum) {
+				//Get element and append into the sb variable
+				sb.append(this.elements[index]);
+				index++;
+			}
+		}
+		//Return the string of sb
+		return sb.toString();
 	}
 
 }

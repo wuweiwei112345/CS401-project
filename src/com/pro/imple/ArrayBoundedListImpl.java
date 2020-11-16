@@ -66,7 +66,7 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 	 */
 	public void find(T target) {
 		this.found = false;
-		this.location = -1;
+		this.location = 0;
 		if(!this.isEmpty()) {
 			//The list is empty
 			int index = 0;

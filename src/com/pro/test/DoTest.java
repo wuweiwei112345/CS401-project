@@ -9,9 +9,9 @@ public class DoTest {
 		list.add("a");
 		list.add("b");
 		list.add("c");
+		list.add("f");
 		list.add("d");
 		list.add("e");
-		list.add("f");
 		list.remove("f");
 		System.out.println(list.toString());
 		System.out.println(list.search("b"));
