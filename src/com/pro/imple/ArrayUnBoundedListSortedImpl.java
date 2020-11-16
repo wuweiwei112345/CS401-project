@@ -6,7 +6,7 @@ import com.pro.inter.ListInterface;
 
 /**
  * @describe The implements is array-based's unbounded sorted list
- * @author Wei Wu
+ * @author Wei Wu 
  */
 public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
 
