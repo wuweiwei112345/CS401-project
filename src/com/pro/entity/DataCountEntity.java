@@ -31,7 +31,7 @@ public class DataCountEntity {
 		return avg;
 	}
 	
-	public String createResultToString() {
+	public long createResultToString() {
 		StringBuffer sb = new StringBuffer();
 		List<Long> dataCountList = this.dataCountList;
 		Long dataCountTotal = 0L;
