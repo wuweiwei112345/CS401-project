@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @describe Data count entity
- * @author wuwei
+ * @author Wei Wu
  */
 public class DataCountEntity {
 	
