@@ -1,33 +1,39 @@
 package com.pro.test;
 
-import com.pro.imple.ArrayUnBoundedListSortedImpl;
+import java.util.Iterator;
+
+import com.pro.imple.BinarySearchTree;
 
 public class DoTest {
 
 	public static void main(String[] args) {
-		ArrayUnBoundedListSortedImpl<String> list = new ArrayUnBoundedListSortedImpl<String>(10);
-		list.add("a");
-		list.add("b");
-		list.add("c");
-		list.add("f");
-		list.add("d");
-		list.add("1");
-		list.add("2");
-		list.add("3");
-		list.add("4");
-		list.add("5");
-		list.add("6");
-		list.add("7");
-		list.add("8");
-		list.add("9");
-		list.add("10");
-		list.add("11");
-		System.out.println(list.toString());
-		System.out.println(list.search("b"));
-		System.out.println(list.search("q"));
-		System.out.println(list.contoins("b"));
-		System.out.println(list.contoins("q"));
-		System.out.println(list.size());
+		BinarySearchTree<String> tree = new BinarySearchTree<String>();
+		tree.add("a");
+		tree.add("b");
+		tree.add("c");
+		tree.add("f");
+		tree.add("d");
+		tree.add("1");
+		tree.add("2");
+		tree.add("3");
+		tree.add("4");
+		tree.add("5");
+		tree.add("6");
+		tree.add("7");
+		tree.add("8");
+		tree.add("9");
+		tree.add("10");
+		tree.add("11");
+		tree.remove("2");
+		Iterator<String> iterator = tree.iterator();
+		while(iterator.hasNext()) {
+			System.out.println(iterator.next());
+		}
+		System.out.println(tree.search("b"));
+		System.out.println(tree.search("q"));
+		System.out.println(tree.contoins("b"));
+		System.out.println(tree.contoins("q"));
+		System.out.println(tree.size());
 	}
 
 }

@@ -32,6 +32,6 @@ public interface BSTInterface<T> extends ListInterface<T>, Iterable<T> {
 	 * @param orderType
 	 * @return Iterator
 	 */
-	public Iterator<T> getIterator(Traversal orderType);
+	public Iterator<T> getIterator(BSTInterface.Traversal orderType);
 	
 }
