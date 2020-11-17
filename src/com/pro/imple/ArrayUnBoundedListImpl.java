@@ -152,7 +152,9 @@ public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 			//Loop and find target element
 			while(index < arrNum) {
 				//Get element and append into the sb variable
-				sb.append(this.elements[index]);
+				if(this.elements[index] != null) {
+					sb.append(this.elements[index]).append(",");
+				}
 				index++;
 			}
 		}

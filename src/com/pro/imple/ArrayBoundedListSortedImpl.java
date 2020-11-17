@@ -75,8 +75,9 @@ public class ArrayBoundedListSortedImpl<T extends Comparable<T>> implements List
 		this.find(target);
 		if(this.found) {
 			//The target element is found,delete it.
-			this.elements[this.location] = this.elements[this.elementsNum - 1];
-			this.elementsNum--;
+			for(int i = this.location ; i < this.elementsNum ; i++) {
+				this.elements[i] = this.elements[i + 1];
+			}
 		}
 		return this.found;
 	}
@@ -135,7 +136,9 @@ public class ArrayBoundedListSortedImpl<T extends Comparable<T>> implements List
 			//Loop and find target element
 			while(index < arrNum) {
 				//Get element and append into the sb variable
-				sb.append(this.elements[index]);
+				if(this.elements[index] != null) {
+					sb.append(this.elements[index]).append(",");
+				}
 				index++;
 			}
 		}
