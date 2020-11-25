@@ -12,7 +12,6 @@ import com.pro.entity.StaticDataEntity;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import java.awt.GridLayout;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -33,7 +32,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JFileChooser;
 import java.awt.TextArea;
 import javax.swing.JTextField;
-import java.awt.Window.Type;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.MouseAdapter;
