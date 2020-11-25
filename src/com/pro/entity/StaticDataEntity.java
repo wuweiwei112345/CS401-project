@@ -30,59 +30,20 @@ public class StaticDataEntity {
 		DATA_STRUCTURE_MAP.put(DataStructureCodeEnum.BINARY_SEARCH_TREE.getCode(), "Binary search tree                                ");
 	}
 	
-	public SecondStepDataEntity getSecondStepDataStringTypeEntity(int selectedType,String filePath,String separator,String testData) {
+	public SecondStepDataEntity getSecondStepDataStringTypeEntity(int selectedType,String filePath,String separator,String[] stringDataArr) {
 		SecondStepDataEntity entity = new SecondStepDataEntity();
 		entity.setSelectedType(selectedType);
 		entity.setFilePath(filePath);
 		entity.setSeparator(separator);
-		entity.setTestData(testData);
+		entity.setStringDataArr(stringDataArr);
 		return entity;
 	}
 	
 	public SecondStepDataEntity getSecondStepDataIntegerTypeEntity(int selectedType,Integer[] dataArray) {
 		SecondStepDataEntity entity = new SecondStepDataEntity();
 		entity.setSelectedType(selectedType);
-		entity.setDataArray(dataArray);
+		entity.setNumberDataArray(dataArray);
 		return entity;
-	}
-		
-	class SecondStepDataEntity{
-		private int selectedType;
-		private String filePath;
-		private String separator;
-		private String testData;
-		private Integer[] dataArray;
-		
-		public int getSelectedType() {
-			return selectedType;
-		}
-		public void setSelectedType(int selectedType) {
-			this.selectedType = selectedType;
-		}
-		public String getFilePath() {
-			return filePath;
-		}
-		public void setFilePath(String filePath) {
-			this.filePath = filePath;
-		}
-		public String getSeparator() {
-			return separator;
-		}
-		public void setSeparator(String separator) {
-			this.separator = separator;
-		}
-		public String getTestData() {
-			return testData;
-		}
-		public void setTestData(String testData) {
-			this.testData = testData;
-		}
-		public Integer[] getDataArray() {
-			return dataArray;
-		}
-		public void setDataArray(Integer[] dataArray) {
-			this.dataArray = dataArray;
-		}
 	}
 
 }
