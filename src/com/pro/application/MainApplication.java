@@ -7,15 +7,19 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import com.pro.entity.DataStructureCodeEnum;
+import com.pro.entity.SecondStepDataEntity;
 import com.pro.entity.StaticDataEntity;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import java.awt.GridLayout;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.JMenuItem;
@@ -29,6 +33,11 @@ import javax.swing.JRadioButton;
 import javax.swing.JFileChooser;
 import java.awt.TextArea;
 import javax.swing.JTextField;
+import java.awt.Window.Type;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainApplication {
 
@@ -60,6 +69,7 @@ public class MainApplication {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JButton btnNewButton_1;
+	private SecondStepDataEntity secondStepDataEntity;
 
 	/**
 	 * Launch the application.
@@ -89,6 +99,7 @@ public class MainApplication {
 	 */
 	private void initialize() {
 		frmPerformanceAnalysisOf = new JFrame();
+		frmPerformanceAnalysisOf.setResizable(false);
 		frmPerformanceAnalysisOf.setTitle("Performance analysis of data structure");
 		frmPerformanceAnalysisOf.setIconImage(Toolkit.getDefaultToolkit().getImage("G:\\book\\A-\u6211\u7684\u56FE\u7247\\3cb81764d54b35f9b41bdd33f7e3fc65.jpg"));
 		frmPerformanceAnalysisOf.setBounds(100, 100, 1184, 730);
@@ -302,7 +313,7 @@ public class MainApplication {
 					layeredPane.setLayer(panel_2, 0);
 					layeredPane.setLayer(panel_4, 1);
 				}else {
-					JOptionPane.showMessageDialog(null, "请选择至少一个数据结构!");
+					JOptionPane.showMessageDialog(null, "Please select at least one data structure !", "message", 1);
 				}
 			}
 		});
@@ -329,18 +340,29 @@ public class MainApplication {
 		panel_6.setBounds(250, 103, 773, 38);
 		panel_5.add(panel_6);
 		
-		rdbtnNewRadioButton = new JRadioButton("String type");
+		rdbtnNewRadioButton = new JRadioButton("String type",true);
 		rdbtnNewRadioButton.setName("rdbtnNewRadioButton");
 		rdbtnNewRadioButton.setFont(new Font("宋体", Font.PLAIN, 21));
 		
-		rdbtnNewRadioButton_1 = new JRadioButton("Integer type");
+		rdbtnNewRadioButton_1 = new JRadioButton("Integer type",false);
+		rdbtnNewRadioButton_1.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				
+				
+				
+			}
+		});
 		rdbtnNewRadioButton_1.setName("rdbtnNewRadioButton");
 		rdbtnNewRadioButton_1.setFont(new Font("宋体", Font.PLAIN, 21));
 		panel_6.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		panel_6.add(rdbtnNewRadioButton);
 		panel_6.add(rdbtnNewRadioButton_1);
 		
-		TextArea textArea = new TextArea();
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(rdbtnNewRadioButton);
+		buttonGroup.add(rdbtnNewRadioButton_1);
+		
+		TextArea textArea = new TextArea(null, 20, 20, TextArea.SCROLLBARS_NONE);
 		textArea.setBounds(149, 219, 874, 286);
 		panel_5.add(textArea);
 		
@@ -383,6 +405,29 @@ public class MainApplication {
 		panel_7.add(textField_1);
 		textField_1.setColumns(4);
 		
+		JPanel panel_9 = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) panel_9.getLayout();
+		flowLayout_2.setAlignment(FlowLayout.LEFT);
+		panel_9.setBounds(250, 156, 773, 42);
+		panel_5.add(panel_9);
+		
+		JButton btnNewButton_2 = new JButton("Generate 2000 random numbers");
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				StringBuffer testDataSb = new StringBuffer();
+				Random rand = new Random();
+				for(int i = 0 ; i < 2000 ; i++) {
+					testDataSb.append(rand.nextInt(100)).append(",");
+				}
+				
+				textArea.setText(testDataSb.toString());
+				
+			}
+		});
+		panel_9.add(btnNewButton_2);
+		
 		JPanel panel_8 = new JPanel();
 		panel_8.setBounds(710, 590, 450, 39);
 		panel_4.add(panel_8);
@@ -392,7 +437,36 @@ public class MainApplication {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				//数据验证
+				if("".equals(textField.getText())) {
+					JOptionPane.showMessageDialog(null, "Please select a file !","message",1);
+					return;
+				}
+				if("".equals(textField_1.getText())) {
+					JOptionPane.showMessageDialog(null, "Please input a separator !","message",1);
+					return;
+				}
+				if("".equals(textArea.getText())) {
+					JOptionPane.showMessageDialog(null, "It's have't test data !","message",1);
+					return;
+				}
+				
+				//实例化静态数据
 				StaticDataEntity staticDataEntity = new StaticDataEntity();
+				
+				//判断选中的单选按钮
+				if(rdbtnNewRadioButton.isSelected()) {
+					String[] stringDataArr = textArea.getText().split(textField_1.getText());
+					secondStepDataEntity = staticDataEntity.getSecondStepDataStringTypeEntity(1, textField.getText(), textField_1.getText(), stringDataArr);
+				}else if(rdbtnNewRadioButton_1.isSelected()) {
+					//获取输入框中的测试随机数字数据转换成Integer类型数组并存储
+					String[] numberArr = textArea.getText().split(",");
+					Integer[] numberList = new Integer[numberArr.length];
+					for(int i = 0 ; i < numberArr.length ; i++) {
+						numberList[i] = Integer.parseInt(numberArr[i]);
+					}
+					secondStepDataEntity = staticDataEntity.getSecondStepDataIntegerTypeEntity(2, numberList);
+				}
 				
 			}
 		});
@@ -413,6 +487,27 @@ public class MainApplication {
 		btnNewButton_1.setBounds(4, 5, 193, 33);
 		panel_8.add(btnNewButton_1);
 		
+		rdbtnNewRadioButton.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				
+				JRadioButton jRadioButton = (JRadioButton)e.getSource();
+				if(jRadioButton.isSelected()) {
+					panel_7.setVisible(true);
+				}
+				
+			}
+		});
+		
+		rdbtnNewRadioButton_1.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				
+				JRadioButton jRadioButton = (JRadioButton)e.getSource();
+				if(jRadioButton.isSelected()) {
+					panel_7.setVisible(false);
+				}
+				
+			}
+		});
 		
 	}
 }
