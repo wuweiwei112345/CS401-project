@@ -7,8 +7,12 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import com.pro.entity.DataStructureCodeEnum;
+import com.pro.entity.ResultDataEntity;
 import com.pro.entity.SecondStepDataEntity;
 import com.pro.entity.StaticDataEntity;
+import com.pro.imple.SimpleFactory;
+import com.pro.inter.ListInterface;
+
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import java.awt.GridLayout;
@@ -17,8 +21,14 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.JMenuItem;
@@ -36,6 +46,16 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import javax.swing.JTextPane;
+import javax.swing.JEditorPane;
+import javax.swing.JTextArea;
+import javax.swing.DropMode;
 
 public class MainApplication {
 
@@ -68,6 +88,10 @@ public class MainApplication {
 	private JTextField textField_1;
 	private JButton btnNewButton_1;
 	private SecondStepDataEntity secondStepDataEntity;
+	private JPanel panel_10;
+	private JTextField textField_2;
+	private JLabel lblNewLabel_2;
+	private JButton button_1;
 
 	/**
 	 * Launch the application.
@@ -386,6 +410,25 @@ public class MainApplication {
 				if (returnVal == JFileChooser.APPROVE_OPTION) {     //如果符合文件类型
 					String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径
 					textField.setText(filepath);
+					
+					StringBuffer stringDataSb = new StringBuffer();
+					File file = new File(filepath);
+					Reader reader = null;
+					try {
+						// 一次读一个字符
+						reader = new InputStreamReader(new FileInputStream(file));
+						int tempInt;
+						char tempChar;
+						while ((tempInt = reader.read()) != -1) {
+							tempChar = (char) tempInt;
+							stringDataSb.append(tempChar);
+						}
+						reader.close();
+						textArea.setText(stringDataSb.toString());
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					
 					//System.out.println(filepath);
 					//System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //输出相对路径
 				}
@@ -417,7 +460,7 @@ public class MainApplication {
 				StringBuffer testDataSb = new StringBuffer();
 				Random rand = new Random();
 				for(int i = 0 ; i < 2000 ; i++) {
-					testDataSb.append(rand.nextInt(100)).append(",");
+					testDataSb.append(rand.nextInt(2000)).append(",");
 				}
 				
 				textArea.setText(testDataSb.toString());
@@ -435,15 +478,6 @@ public class MainApplication {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//数据验证
-				if("".equals(textField.getText())) {
-					JOptionPane.showMessageDialog(null, "Please select a file !","message",1);
-					return;
-				}
-				if("".equals(textField_1.getText())) {
-					JOptionPane.showMessageDialog(null, "Please input a separator !","message",1);
-					return;
-				}
 				if("".equals(textArea.getText())) {
 					JOptionPane.showMessageDialog(null, "It's have't test data !","message",1);
 					return;
@@ -454,6 +488,15 @@ public class MainApplication {
 				
 				//判断选中的单选按钮
 				if(rdbtnNewRadioButton.isSelected()) {
+					//数据验证
+					if("".equals(textField.getText())) {
+						JOptionPane.showMessageDialog(null, "Please select a file !","message",1);
+						return;
+					}
+					if("".equals(textField_1.getText())) {
+						JOptionPane.showMessageDialog(null, "Please input a separator !","message",1);
+						return;
+					}
 					String[] stringDataArr = textArea.getText().split(textField_1.getText());
 					secondStepDataEntity = staticDataEntity.getSecondStepDataStringTypeEntity(1, textField.getText(), textField_1.getText(), stringDataArr);
 				}else if(rdbtnNewRadioButton_1.isSelected()) {
@@ -465,6 +508,9 @@ public class MainApplication {
 					}
 					secondStepDataEntity = staticDataEntity.getSecondStepDataIntegerTypeEntity(2, numberList);
 				}
+				
+				layeredPane.setLayer(panel_4, 0);
+				layeredPane.setLayer(panel_10, 1);
 				
 			}
 		});
@@ -484,6 +530,163 @@ public class MainApplication {
 		btnNewButton_1.setFont(new Font("宋体", Font.PLAIN, 20));
 		btnNewButton_1.setBounds(4, 5, 193, 33);
 		panel_8.add(btnNewButton_1);
+		
+		panel_10 = new JPanel();
+		layeredPane.setLayer(panel_10, 0);
+		panel_10.setBounds(0, 0, 1178, 659);
+		layeredPane.add(panel_10);
+		panel_10.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("Please enter a search target\uFF1A");
+		lblNewLabel_1.setFont(new Font("宋体", Font.PLAIN, 20));
+		lblNewLabel_1.setBounds(256, 64, 300, 21);
+		panel_10.add(lblNewLabel_1);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(555, 61, 96, 27);
+		panel_10.add(textField_2);
+		textField_2.setColumns(10);
+		
+		TextArea textArea_1 = new TextArea();
+		textArea_1.setFont(new Font("Dialog", Font.PLAIN, 22));
+		textArea_1.setBounds(180, 120, 870, 470);
+		
+		JButton btnNewButton_3 = new JButton("Confirm and start analysis");
+		btnNewButton_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				String textByField2 = null;
+				//Validation data
+				if(rdbtnNewRadioButton.isSelected()) {
+					textByField2 = textField_2.getText();
+					if(null == textByField2 || "".equals(textByField2)) {
+						JOptionPane.showMessageDialog(null, "The search target is not empty !","message",1);
+						return;
+					}
+				}else if(rdbtnNewRadioButton_1.isSelected()) {
+					textByField2 = textField_2.getText();
+					if(null == textByField2 || "".equals(textByField2)) {
+						JOptionPane.showMessageDialog(null, "The search target is not empty !","message",1);
+						return;
+					}
+					Pattern p = Pattern.compile("[0-9]|[0-9]\\d+");
+		            Matcher m = p.matcher(textByField2);
+		            boolean b = m.matches();
+					if(!b) {
+						JOptionPane.showMessageDialog(null, "The search target is wrongful !","message",1);
+						return;
+					}
+				}
+				
+				//Analysis and treatment
+				List<String> dataStructureList = StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST;
+				for(String code : dataStructureList) {
+					if(rdbtnNewRadioButton.isSelected()) {
+						ListInterface<String> list = SimpleFactory.createListImplByString(code, 2000);
+						String[] dataStrArr = secondStepDataEntity.getStringDataArr();
+						for(String data : dataStrArr) {
+							list.add(data);
+						}
+						ResultDataEntity resultDataEntity = new ResultDataEntity();
+						for(int y = 1; y < 4 ; y++) {
+							long time1 = System.currentTimeMillis() * 1000;
+							list.search(textByField2);
+							resultDataEntity.getTimeMap().put(y, ((System.currentTimeMillis() * 1000) - time1));
+						}
+						resultDataEntity.setDataStructureCode(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getCode());
+						resultDataEntity.setDataStructureName(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getDescribe());
+						resultDataEntity.setBigO(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getBigO());
+						resultDataEntity.setTimeUnit("ns");
+						resultDataEntity.setAnalysisText(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getAnalysisText());
+						StaticDataEntity.RESULT_DATA_ENTITY_MAP.put(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getCode(), resultDataEntity);
+					}else if(rdbtnNewRadioButton_1.isSelected()) {
+						ListInterface<Integer> list = SimpleFactory.createListImplByInteger(code, 2000);
+						Integer[] numberArr = secondStepDataEntity.getNumberDataArray();
+						for(Integer data : numberArr) {
+							list.add(data);
+						}
+						ResultDataEntity resultDataEntity = new ResultDataEntity();
+						long timeTotal = 0;
+						for(int y = 1; y < 4 ; y++) {
+							long time1 = System.nanoTime();
+							list.search(Integer.parseInt(textByField2));
+							resultDataEntity.getTimeMap().put(y, (System.nanoTime() - time1));
+							timeTotal += time1;
+						}
+						resultDataEntity.getTimeMap().put(4, (timeTotal / 3));
+						resultDataEntity.setDataStructureCode(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getCode());
+						resultDataEntity.setDataStructureName(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getDescribe());
+						resultDataEntity.setBigO(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getBigO());
+						resultDataEntity.setTimeUnit("ns");
+						resultDataEntity.setAnalysisText(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getAnalysisText());
+						StaticDataEntity.RESULT_DATA_ENTITY_MAP.put(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getCode(), resultDataEntity);
+					}
+				}
+				
+				List<ResultDataEntity> oneLevel = new ArrayList<ResultDataEntity>();
+				List<ResultDataEntity> twoLevel = new ArrayList<ResultDataEntity>();
+				Map<String,ResultDataEntity> resultDataMap = StaticDataEntity.RESULT_DATA_ENTITY_MAP;
+				Collection<ResultDataEntity> resultCollection = resultDataMap.values();
+				Iterator<ResultDataEntity> iterator = resultCollection.iterator();
+				ResultDataEntity resultDataEntity = null;
+				while(iterator.hasNext()) {
+					resultDataEntity = iterator.next();
+					if("O(log2N)".equals(resultDataEntity.getBigO())) {
+						oneLevel.add(resultDataEntity);
+					}else if("O(N)".equals(resultDataEntity.getBigO())) {
+						twoLevel.add(resultDataEntity);
+					}
+				}
+				oneLevel.addAll(twoLevel);
+				
+				StringBuffer resultSb = new StringBuffer();
+				if(oneLevel.size() > 0) {
+					for(int i = 0 ; i < oneLevel.size() ; i++) {
+						ResultDataEntity entity = oneLevel.get(i);
+						resultSb.append("No " + (i + 1) + ". It's " + entity.getDataStructureName()).append("\n");
+						Iterator<Long> timeIterator = entity.getTimeMap().values().iterator();
+						int x = 1;
+						while(timeIterator.hasNext()) {
+							if(x < 4) {
+								resultSb.append("Execution time of " + x + " : " + timeIterator.next() + entity.getTimeUnit()).append("\n");
+							}else {
+								resultSb.append("Execution avg time of " + " : " + timeIterator.next() + entity.getTimeUnit()).append("\n");
+							}
+							x++;
+						}
+						resultSb.append("The big-O is " + entity.getBigO() + ".");
+						resultSb.append("\n\n");
+					}
+				}
+				
+				textArea_1.setText(resultSb.toString());
+				
+			}
+		});
+		btnNewButton_3.setBounds(666, 60, 277, 29);
+		panel_10.add(btnNewButton_3);
+		
+		lblNewLabel_2 = new JLabel("The third step , is to enter the target character and start the analysis");
+		lblNewLabel_2.setFont(new Font("宋体", Font.BOLD, 22));
+		lblNewLabel_2.setBounds(181, 0, 875, 21);
+		panel_10.add(lblNewLabel_2);
+		
+		button_1 = new JButton("back");
+		button_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				layeredPane.setLayer(panel_10, 0);
+				layeredPane.setLayer(panel_4, 1);
+				
+			}
+		});
+		button_1.setFont(new Font("宋体", Font.PLAIN, 20));
+		button_1.setBounds(965, 595, 193, 33);
+		panel_10.add(button_1);
+		
+		panel_10.add(textArea_1);
 		
 		rdbtnNewRadioButton.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
