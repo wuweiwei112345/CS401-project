@@ -23,7 +23,7 @@ public class LinkedUnBoundedListImpl<T> implements ListInterface<T> {
 	}
 
 	@Override
-	public boolean contoins(T target) {
+	public boolean contain(T target) {
 		// TODO Auto-generated method stub
 		return false;
 	}

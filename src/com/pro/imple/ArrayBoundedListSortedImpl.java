@@ -58,7 +58,7 @@ public class ArrayBoundedListSortedImpl<T extends Comparable<T>> implements List
 	}
 
 	@Override
-	public boolean contoins(T target) {
+	public boolean contain(T target) {
 		//Find by target
 		this.find(target);
 		//Return result

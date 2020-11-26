@@ -82,7 +82,7 @@ public class BinarySearchTree<T> implements BSTInterface<T> {
 	}
 
 	@Override
-	public boolean contoins(T target) {
+	public boolean contain(T target) {
 		//Cell the recContoins method.
 		return this.recContoins(target, this.root);
 	}

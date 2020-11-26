@@ -52,7 +52,7 @@ public class ArrayBoundedListImpl<T> implements ListInterface<T> {
 	}
 
 	@Override
-	public boolean contoins(T target) {
+	public boolean contain(T target) {
 		//Try find the target
 		this.find(target);
 		//Return the result

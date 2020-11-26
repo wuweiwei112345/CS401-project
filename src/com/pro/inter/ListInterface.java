@@ -28,7 +28,7 @@ public interface ListInterface<T> {
 	 * @param target is expected goals
 	 * @return true is contain and false is not contain
 	 */
-	public boolean contoins(T target);
+	public boolean contain(T target);
 	
 	/**
 	 * Remove appoint element.If list is empty throws UnderflowException.
