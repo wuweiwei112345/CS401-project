@@ -27,8 +27,8 @@ public class DoTest {
 		System.out.println(list.toString());
 		System.out.println(list.search(8));
 		System.out.println(list.search(10));
-		System.out.println(list.contoins(8));
-		System.out.println(list.contoins(10));
+		System.out.println(list.contain(8));
+		System.out.println(list.contain(10));
 		System.out.println(list.size());
 	}
 
