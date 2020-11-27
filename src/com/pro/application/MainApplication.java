@@ -6,16 +6,14 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import com.pro.entity.DataStructureCodeEnum;
+import com.pro.entity.DataStructureInfoEntity;
 import com.pro.entity.ResultDataEntity;
 import com.pro.entity.SecondStepDataEntity;
 import com.pro.entity.StaticDataEntity;
 import com.pro.imple.SimpleFactory;
 import com.pro.inter.ListInterface;
-
 import java.awt.Font;
 import javax.swing.JCheckBox;
-import java.awt.GridLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -48,14 +46,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import javax.swing.JTextPane;
-import javax.swing.JEditorPane;
-import javax.swing.JTextArea;
-import javax.swing.DropMode;
+import java.awt.Choice;
 
 public class MainApplication {
 
@@ -67,15 +60,6 @@ public class MainApplication {
 	private JPanel panel_2;
 	private JPanel panel_1;
 	private JLabel label;
-	private JCheckBox checkBox;
-	private JCheckBox checkBox_1;
-	private JCheckBox checkBox_2;
-	private JCheckBox checkBox_3;
-	private JCheckBox checkBox_4;
-	private JCheckBox checkBox_5;
-	private JCheckBox checkBox_6;
-	private JCheckBox checkBox_7;
-	private JCheckBox checkBox_8;
 	private JPanel panel_3;
 	private JButton btnConfirmAndNext;
 	private JPanel panel_4;
@@ -92,6 +76,9 @@ public class MainApplication {
 	private JTextField textField_2;
 	private JLabel lblNewLabel_2;
 	private JButton button_1;
+	private Choice choice;
+	private Choice choice1;
+	private Choice choice_1;
 
 	/**
 	 * Launch the application.
@@ -161,165 +148,189 @@ public class MainApplication {
 		panel_1 = new JPanel();
 		panel_1.setBounds(0, 5, 1162, 580);
 		panel_2.add(panel_1);
-		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
+		panel_1.setLayout(null);
 		
 		label = new JLabel("The first step , please select data structure (multiple choices are allowed)");
+		label.setBounds(0, 0, 1162, 58);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("宋体", Font.BOLD, 26));
 		panel_1.add(label);
 		
-		checkBox = new JCheckBox("Bounded sorted list based on array               ");
-		checkBox.setHorizontalAlignment(SwingConstants.CENTER);
-		checkBox.setFont(new Font("宋体", Font.PLAIN, 22));
-		checkBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				String code = DataStructureCodeEnum.BOUNDED_ORDERED_LIST_BASED_ON_ARRAY.getCode();
-				JCheckBox jCheckBox = (JCheckBox)e.getSource();
-				if(jCheckBox.isSelected()) {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(code);
-				}else {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(code);
-				}
-			}
-		});
-		panel_1.add(checkBox);
+		JPanel panel_11 = new JPanel();
+		panel_11.setBounds(300, 100, 620, 480);
+		panel_11.setLayout(null);
+		panel_1.add(panel_11);
 		
-		checkBox_1 = new JCheckBox("Bounded unsorted list based on array             ");
-		checkBox_1.setHorizontalAlignment(SwingConstants.CENTER);
-		checkBox_1.setFont(new Font("宋体", Font.PLAIN, 22));
-		checkBox_1.addItemListener(new ItemListener() {
-			@Override
+		choice1 = new Choice();
+		choice1.setFont(new Font("Dialog", Font.PLAIN, 19));
+		choice1.setBounds(490, 65, 240, 27);
+		choice1.add("===Is there a sorted===");
+		choice1.add("Sorted");
+		choice1.add("Unsorted");
+		choice1.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				String code = DataStructureCodeEnum.BOUNDED_UNORDERED_LIST_BASED_ON_ARRAY.getCode();
-				JCheckBox jCheckBox = (JCheckBox)e.getSource();
-				if(jCheckBox.isSelected()) {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(code);
-				}else {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(code);
+				
+				StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.removeAll(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
+				System.out.println(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
+				panel_11.removeAll();
+				choice.select(0);
+				choice_1.select(0);
+				String item = e.getItem().toString();
+				Iterator<DataStructureInfoEntity> dataStructureIter = StaticDataEntity.DATA_STRUCTURE_MAP.values().iterator();
+				Integer isSorted = 0;
+				if("===Is there a sorted===".equals(item)) {
+					isSorted = 0;
+				}else if("Sorted".equals(item)) {
+					isSorted = 1;
+				}else if("Unsorted".equals(item)) {
+					isSorted = 2;
 				}
+				
+				int x = 0;
+				DataStructureInfoEntity entity = null;
+				while(dataStructureIter.hasNext()) {
+					entity = dataStructureIter.next();
+					if(entity.getIsSorted().equals(isSorted)) {
+						JCheckBox checkBox = new JCheckBox(entity.getDescribe());
+						checkBox.setName(entity.getCode());
+						checkBox.setBounds(0, 58 * x, 1162, 58);
+						checkBox.setFont(new Font("宋体", Font.PLAIN, 22));
+						checkBox.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								
+								JCheckBox jCheckBox = (JCheckBox)e.getSource();
+								if(jCheckBox.isSelected()) {
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(jCheckBox.getName());
+								}else {
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(jCheckBox.getName());
+								}
+								
+							}
+						});
+						panel_11.add(checkBox);
+						x++;
+					}
+				}
+				panel_11.updateUI();
 			}
 		});
-		panel_1.add(checkBox_1);
+		panel_1.add(choice1);
 		
-		checkBox_2 = new JCheckBox("Unbounded sorted list based on array             ");
-		checkBox_2.setHorizontalAlignment(SwingConstants.CENTER);
-		checkBox_2.setFont(new Font("宋体", Font.PLAIN, 22));
-		checkBox_2.addItemListener(new ItemListener() {
-			@Override
+		choice = new Choice();
+		choice.setFont(new Font("Dialog", Font.PLAIN, 19));
+		choice.setBounds(190, 65, 270, 27);
+		choice.add("===Is there a boundary===");
+		choice.add("Bounded");
+		choice.add("Unbounded");
+		choice.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				String code = DataStructureCodeEnum.UNBOUNDED_ORDERED_LIST_BASED_ON_ARRAY.getCode();
-				JCheckBox jCheckBox = (JCheckBox)e.getSource();
-				if(jCheckBox.isSelected()) {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(code);
-				}else {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(code);
+				
+				StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.removeAll(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
+				System.out.println(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
+				panel_11.removeAll();
+				choice1.select(0);
+				choice_1.select(0);
+				String item = e.getItem().toString();
+				Iterator<DataStructureInfoEntity> dataStructureIter = StaticDataEntity.DATA_STRUCTURE_MAP.values().iterator();
+				Integer isBounded = 0;
+				if("===Is there a boundary===".equals(item)) {
+					isBounded = 0;
+				}else if("Bounded".equals(item)) {
+					isBounded = 1;
+				}else if("Unbounded".equals(item)) {
+					isBounded = 2;
 				}
+				
+				int x = 0;
+				DataStructureInfoEntity entity = null;
+				while(dataStructureIter.hasNext()) {
+					entity = dataStructureIter.next();
+					if(entity.getIsBounded().equals(isBounded)) {
+						JCheckBox checkBox = new JCheckBox(entity.getDescribe());
+						checkBox.setName(entity.getCode());
+						checkBox.setBounds(0, 58 * x, 1162, 58);
+						checkBox.setFont(new Font("宋体", Font.PLAIN, 22));
+						checkBox.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								
+								JCheckBox jCheckBox = (JCheckBox)e.getSource();
+								if(jCheckBox.isSelected()) {
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(jCheckBox.getName());
+								}else {
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(jCheckBox.getName());
+								}
+								
+							}
+						});
+						panel_11.add(checkBox);
+						x++;
+					}
+				}
+				panel_11.updateUI();
 			}
 		});
-		panel_1.add(checkBox_2);
+		panel_1.add(choice);
 		
-		checkBox_3 = new JCheckBox("Unbounded and unsorted list based on array       ");
-		checkBox_3.setHorizontalAlignment(SwingConstants.CENTER);
-		checkBox_3.setFont(new Font("宋体", Font.PLAIN, 22));
-		checkBox_3.addItemListener(new ItemListener() {
-			@Override
+		choice_1 = new Choice();
+		choice_1.setFont(new Font("Dialog", Font.PLAIN, 19));
+		choice_1.setBounds(770, 65, 200, 27);
+		choice_1.add("===Search type===");
+		choice_1.add("Line search");
+		choice_1.add("Binary search");
+		choice_1.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				String code = DataStructureCodeEnum.UNBOUNDED_AND_UNORDERED_LIST_BASED_ON_ARRAY.getCode();
-				JCheckBox jCheckBox = (JCheckBox)e.getSource();
-				if(jCheckBox.isSelected()) {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(code);
-				}else {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(code);
+				
+				StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.removeAll(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
+				System.out.println(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
+				panel_11.removeAll();
+				choice1.select(0);
+				choice.select(0);
+				String item = e.getItem().toString();
+				Iterator<DataStructureInfoEntity> dataStructureIter = StaticDataEntity.DATA_STRUCTURE_MAP.values().iterator();
+				Integer isSearchType = 0;
+				if("===Search type===".equals(item)) {
+					isSearchType = 0;
+				}else if("Line search".equals(item)) {
+					isSearchType = 1;
+				}else if("Binary search".equals(item)) {
+					isSearchType = 2;
 				}
+				
+				int x = 0;
+				DataStructureInfoEntity entity = null;
+				while(dataStructureIter.hasNext()) {
+					entity = dataStructureIter.next();
+					if(entity.getSearchType().equals(isSearchType)) {
+						JCheckBox checkBox = new JCheckBox(entity.getDescribe());
+						checkBox.setName(entity.getCode());
+						checkBox.setBounds(0, 58 * x, 1162, 58);
+						checkBox.setFont(new Font("宋体", Font.PLAIN, 22));
+						checkBox.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								
+								JCheckBox jCheckBox = (JCheckBox)e.getSource();
+								if(jCheckBox.isSelected()) {
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(jCheckBox.getName());
+								}else {
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(jCheckBox.getName());
+								}
+								
+							}
+						});
+						panel_11.add(checkBox);
+						x++;
+					}
+				}
+				panel_11.updateUI();
 			}
 		});
-		panel_1.add(checkBox_3);
-		
-		checkBox_4 = new JCheckBox("Bounded sorted list based on linked list         ");
-		checkBox_4.setHorizontalAlignment(SwingConstants.CENTER);
-		checkBox_4.setFont(new Font("宋体", Font.PLAIN, 22));
-		checkBox_4.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				String code = DataStructureCodeEnum.BOUNDED_SORTED_LIST_BASED_ON_LINKED_LIST.getCode();
-				JCheckBox jCheckBox = (JCheckBox)e.getSource();
-				if(jCheckBox.isSelected()) {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(code);
-				}else {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(code);
-				}
-			}
-		});
-		panel_1.add(checkBox_4);
-		
-		checkBox_5 = new JCheckBox("Bounded unsorted list based on linked list       ");
-		checkBox_5.setHorizontalAlignment(SwingConstants.CENTER);
-		checkBox_5.setFont(new Font("宋体", Font.PLAIN, 22));
-		checkBox_5.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				String code = DataStructureCodeEnum.BOUNDED_UNORDERED_LIST_BASED_ON_LINKED_LIST.getCode();
-				JCheckBox jCheckBox = (JCheckBox)e.getSource();
-				if(jCheckBox.isSelected()) {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(code);
-				}else {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(code);
-				}
-			}
-		});
-		panel_1.add(checkBox_5);
-		
-		checkBox_6 = new JCheckBox("Unbounded sorted list based on linked list       ");
-		checkBox_6.setHorizontalAlignment(SwingConstants.CENTER);
-		checkBox_6.setFont(new Font("宋体", Font.PLAIN, 22));
-		checkBox_6.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				String code = DataStructureCodeEnum.UNBOUNDED_ORDERED_LIST_BASED_ON_LINKED_LIST.getCode();
-				JCheckBox jCheckBox = (JCheckBox)e.getSource();
-				if(jCheckBox.isSelected()) {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(code);
-				}else {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(code);
-				}
-			}
-		});
-		panel_1.add(checkBox_6);
-		
-		checkBox_7 = new JCheckBox("Unbounded and unsorted list based on linked list ");
-		checkBox_7.setHorizontalAlignment(SwingConstants.CENTER);
-		checkBox_7.setFont(new Font("宋体", Font.PLAIN, 22));
-		checkBox_7.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				String code = DataStructureCodeEnum.UNBOUNDED_AND_UNORDERED_LIST_BASED_ON_LINKED_LIST.getCode();
-				JCheckBox jCheckBox = (JCheckBox)e.getSource();
-				if(jCheckBox.isSelected()) {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(code);
-				}else {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(code);
-				}
-			}
-		});
-		panel_1.add(checkBox_7);
-		
-		checkBox_8 = new JCheckBox("Binary search tree                               ");
-		checkBox_8.setHorizontalAlignment(SwingConstants.CENTER);
-		checkBox_8.setFont(new Font("宋体", Font.PLAIN, 22));
-		checkBox_8.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				String code = DataStructureCodeEnum.BINARY_SEARCH_TREE.getCode();
-				JCheckBox jCheckBox = (JCheckBox)e.getSource();
-				if(jCheckBox.isSelected()) {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(code);
-				}else {
-					StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(code);
-				}
-			}
-		});
-		panel_1.add(checkBox_8);
+		panel_1.add(choice_1);
 		
 		panel_3 = new JPanel();
 		panel_3.setBounds(960, 590, 200, 39);
@@ -556,6 +567,9 @@ public class MainApplication {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				StaticDataEntity.RESULT_DATA_ENTITY_MAP.clear();
+				textArea_1.setText("");
+				textArea_1.append("");
 				String textByField2 = null;
 				//Validation data
 				if(rdbtnNewRadioButton.isSelected()) {
