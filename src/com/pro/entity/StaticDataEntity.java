@@ -20,58 +20,85 @@ public class StaticDataEntity {
 	static {
 		
 		DataStructureInfoEntity dataStructureInfoEntity1 = new DataStructureInfoEntity();
-		dataStructureInfoEntity1.setCode(DataStructureCodeEnum.BOUNDED_ORDERED_LIST_BASED_ON_ARRAY.getCode());
-		dataStructureInfoEntity1.setDescribe("Bounded ordered list based on array   ");
+		dataStructureInfoEntity1.setCode(DataStructureCodeEnum.BOUNDED_SORTED_LIST_BASED_ON_ARRAY.getCode());
+		dataStructureInfoEntity1.setDescribe("Bounded sorted list based on array   ");
 		dataStructureInfoEntity1.setBigO("O(log2N)");
 		dataStructureInfoEntity1.setAnalysisText("AnalysisText O(log2N)");
+		dataStructureInfoEntity1.setIsBounded(1);
+		dataStructureInfoEntity1.setIsSorted(1);
+		dataStructureInfoEntity1.setSearchType(2);
 		
 		DataStructureInfoEntity dataStructureInfoEntity2 = new DataStructureInfoEntity();
-		dataStructureInfoEntity2.setCode(DataStructureCodeEnum.BOUNDED_UNORDERED_LIST_BASED_ON_ARRAY.getCode());
-		dataStructureInfoEntity2.setDescribe("Bounded unordered list based on array             ");
+		dataStructureInfoEntity2.setCode(DataStructureCodeEnum.BOUNDED_UNSORTED_LIST_BASED_ON_ARRAY.getCode());
+		dataStructureInfoEntity2.setDescribe("Bounded unsorted list based on array             ");
 		dataStructureInfoEntity2.setBigO("O(N)");
 		dataStructureInfoEntity2.setAnalysisText("AnalysisText O(N)");
+		dataStructureInfoEntity2.setIsBounded(1);
+		dataStructureInfoEntity2.setIsSorted(2);
+		dataStructureInfoEntity2.setSearchType(1);
 		
 		DataStructureInfoEntity dataStructureInfoEntity3 = new DataStructureInfoEntity();
-		dataStructureInfoEntity3.setCode(DataStructureCodeEnum.UNBOUNDED_ORDERED_LIST_BASED_ON_ARRAY.getCode());
-		dataStructureInfoEntity3.setDescribe("Unbounded ordered list based on array             ");
+		dataStructureInfoEntity3.setCode(DataStructureCodeEnum.UNBOUNDED_SORTED_LIST_BASED_ON_ARRAY.getCode());
+		dataStructureInfoEntity3.setDescribe("Unbounded sorted list based on array             ");
 		dataStructureInfoEntity3.setBigO("O(log2N)");
 		dataStructureInfoEntity3.setAnalysisText("AnalysisText O(log2N)");
+		dataStructureInfoEntity3.setIsBounded(2);
+		dataStructureInfoEntity3.setIsSorted(1);
+		dataStructureInfoEntity3.setSearchType(2);
 		
 		DataStructureInfoEntity dataStructureInfoEntity4 = new DataStructureInfoEntity();
-		dataStructureInfoEntity4.setCode(DataStructureCodeEnum.UNBOUNDED_AND_UNORDERED_LIST_BASED_ON_ARRAY.getCode());
-		dataStructureInfoEntity4.setDescribe("Unbounded and unordered list based on array       ");
+		dataStructureInfoEntity4.setCode(DataStructureCodeEnum.UNBOUNDED_AND_UNSORTED_LIST_BASED_ON_ARRAY.getCode());
+		dataStructureInfoEntity4.setDescribe("Unbounded and unsorted list based on array       ");
 		dataStructureInfoEntity4.setBigO("O(N)");
 		dataStructureInfoEntity4.setAnalysisText("AnalysisText O(N)");
+		dataStructureInfoEntity4.setIsBounded(2);
+		dataStructureInfoEntity4.setIsSorted(2);
+		dataStructureInfoEntity4.setSearchType(1);
 		
 		DataStructureInfoEntity dataStructureInfoEntity5 = new DataStructureInfoEntity();
 		dataStructureInfoEntity5.setCode(DataStructureCodeEnum.BOUNDED_SORTED_LIST_BASED_ON_LINKED_LIST.getCode());
 		dataStructureInfoEntity5.setDescribe("Bounded sorted list based on linked list          ");
 		dataStructureInfoEntity5.setBigO("O(N)");
 		dataStructureInfoEntity5.setAnalysisText("AnalysisText O(N)");
+		dataStructureInfoEntity5.setIsBounded(1);
+		dataStructureInfoEntity5.setIsSorted(1);
+		dataStructureInfoEntity5.setSearchType(1);
 		
 		DataStructureInfoEntity dataStructureInfoEntity6 = new DataStructureInfoEntity();
-		dataStructureInfoEntity6.setCode(DataStructureCodeEnum.BOUNDED_UNORDERED_LIST_BASED_ON_LINKED_LIST.getCode());
-		dataStructureInfoEntity6.setDescribe("Bounded unordered list based on linked list       ");
+		dataStructureInfoEntity6.setCode(DataStructureCodeEnum.BOUNDED_UNSORTED_LIST_BASED_ON_LINKED_LIST.getCode());
+		dataStructureInfoEntity6.setDescribe("Bounded unsorted list based on linked list       ");
 		dataStructureInfoEntity6.setBigO("O(N)");
 		dataStructureInfoEntity6.setAnalysisText("AnalysisText O(N)");
+		dataStructureInfoEntity6.setIsBounded(1);
+		dataStructureInfoEntity6.setIsSorted(2);
+		dataStructureInfoEntity6.setSearchType(1);
 		
 		DataStructureInfoEntity dataStructureInfoEntity7 = new DataStructureInfoEntity();
-		dataStructureInfoEntity7.setCode(DataStructureCodeEnum.UNBOUNDED_ORDERED_LIST_BASED_ON_LINKED_LIST.getCode());
-		dataStructureInfoEntity7.setDescribe("Unbounded ordered list based on linked list       ");
+		dataStructureInfoEntity7.setCode(DataStructureCodeEnum.UNBOUNDED_SORTED_LIST_BASED_ON_LINKED_LIST.getCode());
+		dataStructureInfoEntity7.setDescribe("Unbounded sorted list based on linked list       ");
 		dataStructureInfoEntity7.setBigO("O(N)");
 		dataStructureInfoEntity7.setAnalysisText("AnalysisText O(N)");
+		dataStructureInfoEntity7.setIsBounded(2);
+		dataStructureInfoEntity7.setIsSorted(1);
+		dataStructureInfoEntity7.setSearchType(1);
 		
 		DataStructureInfoEntity dataStructureInfoEntity8 = new DataStructureInfoEntity();
-		dataStructureInfoEntity8.setCode(DataStructureCodeEnum.UNBOUNDED_AND_UNORDERED_LIST_BASED_ON_LINKED_LIST.getCode());
-		dataStructureInfoEntity8.setDescribe("Unbounded and unordered list based on linked list ");
+		dataStructureInfoEntity8.setCode(DataStructureCodeEnum.UNBOUNDED_AND_UNSORTED_LIST_BASED_ON_LINKED_LIST.getCode());
+		dataStructureInfoEntity8.setDescribe("Unbounded and unsorted list based on linked list ");
 		dataStructureInfoEntity8.setBigO("O(N)");
 		dataStructureInfoEntity8.setAnalysisText("AnalysisText O(N)");
+		dataStructureInfoEntity8.setIsBounded(2);
+		dataStructureInfoEntity8.setIsSorted(2);
+		dataStructureInfoEntity8.setSearchType(1);
 		
 		DataStructureInfoEntity dataStructureInfoEntity9 = new DataStructureInfoEntity();
 		dataStructureInfoEntity9.setCode(DataStructureCodeEnum.BINARY_SEARCH_TREE.getCode());
 		dataStructureInfoEntity9.setDescribe("Binary search tree                                ");
 		dataStructureInfoEntity9.setBigO("O(log2N)");
 		dataStructureInfoEntity9.setAnalysisText("AnalysisText O(log2N)");
+		dataStructureInfoEntity9.setIsBounded(2);
+		dataStructureInfoEntity9.setIsSorted(2);
+		dataStructureInfoEntity9.setSearchType(2);
 		
 		
 		//Array
