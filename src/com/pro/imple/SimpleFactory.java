@@ -11,17 +11,17 @@ public class SimpleFactory {
 	public static ListInterface<String> createListImplByString(String code,int maxSize) {
 		ListInterface<String> list = null;
 		switch (code) {
-			case "000000":
-				list = new ArrayBoundedListImpl<String>(maxSize);
-				break;
 			case "000001":
 				list = new ArrayBoundedListSortedImpl<String>(maxSize);
 				break;
 			case "000002":
-				list = new ArrayUnBoundedListImpl<String>();
+				list = new ArrayBoundedListImpl<String>(maxSize);
 				break;
 			case "000003":
 				list = new ArrayUnBoundedListSortedImpl<String>();
+				break;
+			case "000004":
+				list = new ArrayUnBoundedListImpl<String>();
 				break;
 			case "000005":
 				list = null;
@@ -34,6 +34,9 @@ public class SimpleFactory {
 				break;
 			case "000008":
 				list = null;
+				break;
+			case "000009":
+				list = new BinarySearchTree<String>();
 				break;
 			default:
 				break;
@@ -44,17 +47,17 @@ public class SimpleFactory {
 	public static ListInterface<Integer> createListImplByInteger(String code,int maxSize) {
 		ListInterface<Integer> list = null;
 		switch (code) {
-			case "000000":
-				list = new ArrayBoundedListImpl<Integer>(maxSize);
-				break;
 			case "000001":
 				list = new ArrayBoundedListSortedImpl<Integer>(maxSize);
 				break;
 			case "000002":
-				list = new ArrayUnBoundedListImpl<Integer>();
+				list = new ArrayBoundedListImpl<Integer>(maxSize);
 				break;
 			case "000003":
 				list = new ArrayUnBoundedListSortedImpl<Integer>();
+				break;
+			case "000004":
+				list = new ArrayUnBoundedListImpl<Integer>();
 				break;
 			case "000005":
 				list = null;
@@ -67,6 +70,9 @@ public class SimpleFactory {
 				break;
 			case "000008":
 				list = null;
+				break;
+			case "000009":
+				list = new BinarySearchTree<Integer>();
 				break;
 			default:
 				break;
