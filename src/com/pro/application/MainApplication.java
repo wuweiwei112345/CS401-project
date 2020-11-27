@@ -49,6 +49,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.awt.Choice;
+import java.awt.Component;
 
 public class MainApplication {
 
@@ -79,6 +80,7 @@ public class MainApplication {
 	private Choice choice;
 	private Choice choice1;
 	private Choice choice_1;
+	List<DataStructureInfoEntity> dataStructureInfoEntityList = new ArrayList<DataStructureInfoEntity>();
 
 	/**
 	 * Launch the application.
@@ -170,8 +172,8 @@ public class MainApplication {
 		choice1.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				
-				StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.removeAll(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
-				System.out.println(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
+				StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.removeAll(StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST);
+				dataStructureInfoEntityList.removeAll(dataStructureInfoEntityList);
 				panel_11.removeAll();
 				choice.select(0);
 				choice_1.select(0);
@@ -202,13 +204,14 @@ public class MainApplication {
 								
 								JCheckBox jCheckBox = (JCheckBox)e.getSource();
 								if(jCheckBox.isSelected()) {
-									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(jCheckBox.getName());
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.add(StaticDataEntity.DATA_STRUCTURE_MAP.get(jCheckBox.getName()));
 								}else {
-									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(jCheckBox.getName());
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.remove(StaticDataEntity.DATA_STRUCTURE_MAP.get(jCheckBox.getName()));
 								}
 								
 							}
 						});
+						dataStructureInfoEntityList.add(StaticDataEntity.DATA_STRUCTURE_MAP.get(entity.getCode()));
 						panel_11.add(checkBox);
 						x++;
 					}
@@ -227,8 +230,8 @@ public class MainApplication {
 		choice.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				
-				StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.removeAll(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
-				System.out.println(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
+				StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.removeAll(StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST);
+				dataStructureInfoEntityList.removeAll(dataStructureInfoEntityList);
 				panel_11.removeAll();
 				choice1.select(0);
 				choice_1.select(0);
@@ -259,13 +262,14 @@ public class MainApplication {
 								
 								JCheckBox jCheckBox = (JCheckBox)e.getSource();
 								if(jCheckBox.isSelected()) {
-									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(jCheckBox.getName());
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.add(StaticDataEntity.DATA_STRUCTURE_MAP.get(jCheckBox.getName()));
 								}else {
-									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(jCheckBox.getName());
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.remove(StaticDataEntity.DATA_STRUCTURE_MAP.get(jCheckBox.getName()));
 								}
 								
 							}
 						});
+						dataStructureInfoEntityList.add(StaticDataEntity.DATA_STRUCTURE_MAP.get(entity.getCode()));
 						panel_11.add(checkBox);
 						x++;
 					}
@@ -284,16 +288,45 @@ public class MainApplication {
 		choice_1.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				
-				StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.removeAll(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
-				System.out.println(StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST);
 				panel_11.removeAll();
-				choice1.select(0);
-				choice.select(0);
+				Iterator<DataStructureInfoEntity> dataStructureIter = null;
+				if(dataStructureInfoEntityList.size() > 0) {
+					dataStructureIter = dataStructureInfoEntityList.iterator();
+				}else {
+					dataStructureIter = StaticDataEntity.DATA_STRUCTURE_MAP.values().iterator();
+				}
 				String item = e.getItem().toString();
-				Iterator<DataStructureInfoEntity> dataStructureIter = StaticDataEntity.DATA_STRUCTURE_MAP.values().iterator();
 				Integer isSearchType = 0;
 				if("===Search type===".equals(item)) {
 					isSearchType = 0;
+					if(dataStructureInfoEntityList.size() > 0) {
+						Iterator<DataStructureInfoEntity> iter = dataStructureInfoEntityList.iterator();
+						int x = 0;
+						DataStructureInfoEntity entity = null;
+						while(iter.hasNext()) {
+							entity = iter.next();
+							JCheckBox checkBox = new JCheckBox(entity.getDescribe());
+							checkBox.setName(entity.getCode());
+							checkBox.setBounds(0, 58 * x, 1162, 58);
+							checkBox.setFont(new Font("ËÎÌו", Font.PLAIN, 22));
+							checkBox.addActionListener(new ActionListener() {
+								
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									
+									JCheckBox jCheckBox = (JCheckBox)e.getSource();
+									if(jCheckBox.isSelected()) {
+										StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.add(StaticDataEntity.DATA_STRUCTURE_MAP.get(jCheckBox.getName()));
+									}else {
+										StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.remove(StaticDataEntity.DATA_STRUCTURE_MAP.get(jCheckBox.getName()));
+									}
+									
+								}
+							});
+							panel_11.add(checkBox);
+							x++;
+						}
+					}
 				}else if("Line search".equals(item)) {
 					isSearchType = 1;
 				}else if("Binary search".equals(item)) {
@@ -316,9 +349,9 @@ public class MainApplication {
 								
 								JCheckBox jCheckBox = (JCheckBox)e.getSource();
 								if(jCheckBox.isSelected()) {
-									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.add(jCheckBox.getName());
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.add(StaticDataEntity.DATA_STRUCTURE_MAP.get(jCheckBox.getName()));
 								}else {
-									StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST.remove(jCheckBox.getName());
+									StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST.remove(StaticDataEntity.DATA_STRUCTURE_MAP.get(jCheckBox.getName()));
 								}
 								
 							}
@@ -340,7 +373,7 @@ public class MainApplication {
 		btnConfirmAndNext.setFont(new Font("ËÎÌו", Font.PLAIN, 20));
 		btnConfirmAndNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<String> selectedDataStructureCodeList = StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST;
+				List<DataStructureInfoEntity> selectedDataStructureCodeList = StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST;
 				int size = selectedDataStructureCodeList.size();
 				if(size > 0) {
 					layeredPane.setLayer(panel_2, 0);
@@ -594,10 +627,10 @@ public class MainApplication {
 				}
 				
 				//Analysis and treatment
-				List<String> dataStructureList = StaticDataEntity.SELECTED_DATA_STRUCTURE_CODE_LIST;
-				for(String code : dataStructureList) {
+				List<DataStructureInfoEntity> dataStructureList = StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST;
+				for(DataStructureInfoEntity entity : dataStructureList) {
 					if(rdbtnNewRadioButton.isSelected()) {
-						ListInterface<String> list = SimpleFactory.createListImplByString(code, 2000);
+						ListInterface<String> list = SimpleFactory.createListImplByString(entity.getCode(), 2000);
 						String[] dataStrArr = secondStepDataEntity.getStringDataArr();
 						for(String data : dataStrArr) {
 							list.add(data);
@@ -608,14 +641,14 @@ public class MainApplication {
 							list.search(textByField2);
 							resultDataEntity.getTimeMap().put(y, ((System.currentTimeMillis() * 1000) - time1));
 						}
-						resultDataEntity.setDataStructureCode(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getCode());
-						resultDataEntity.setDataStructureName(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getDescribe());
-						resultDataEntity.setBigO(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getBigO());
+						resultDataEntity.setDataStructureCode(entity.getCode());
+						resultDataEntity.setDataStructureName(entity.getDescribe());
+						resultDataEntity.setBigO(entity.getBigO());
 						resultDataEntity.setTimeUnit("ns");
-						resultDataEntity.setAnalysisText(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getAnalysisText());
-						StaticDataEntity.RESULT_DATA_ENTITY_MAP.put(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getCode(), resultDataEntity);
+						resultDataEntity.setAnalysisText(entity.getAnalysisText());
+						StaticDataEntity.RESULT_DATA_ENTITY_MAP.put(entity.getCode(), resultDataEntity);
 					}else if(rdbtnNewRadioButton_1.isSelected()) {
-						ListInterface<Integer> list = SimpleFactory.createListImplByInteger(code, 2000);
+						ListInterface<Integer> list = SimpleFactory.createListImplByInteger(entity.getCode(), 2000);
 						Integer[] numberArr = secondStepDataEntity.getNumberDataArray();
 						for(Integer data : numberArr) {
 							list.add(data);
@@ -629,12 +662,12 @@ public class MainApplication {
 							timeTotal += time1;
 						}
 						resultDataEntity.getTimeMap().put(4, (timeTotal / 3));
-						resultDataEntity.setDataStructureCode(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getCode());
-						resultDataEntity.setDataStructureName(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getDescribe());
-						resultDataEntity.setBigO(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getBigO());
+						resultDataEntity.setDataStructureCode(entity.getCode());
+						resultDataEntity.setDataStructureName(entity.getDescribe());
+						resultDataEntity.setBigO(entity.getBigO());
 						resultDataEntity.setTimeUnit("ns");
-						resultDataEntity.setAnalysisText(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getAnalysisText());
-						StaticDataEntity.RESULT_DATA_ENTITY_MAP.put(StaticDataEntity.DATA_STRUCTURE_MAP.get(code).getCode(), resultDataEntity);
+						resultDataEntity.setAnalysisText(entity.getAnalysisText());
+						StaticDataEntity.RESULT_DATA_ENTITY_MAP.put(entity.getCode(), resultDataEntity);
 					}
 				}
 				

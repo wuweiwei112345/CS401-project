@@ -13,7 +13,7 @@ public class StaticDataEntity {
 	
 	public static final Map<String,DataStructureInfoEntity> DATA_STRUCTURE_MAP = new HashMap<String, DataStructureInfoEntity>();
 	
-	public static final List<String> SELECTED_DATA_STRUCTURE_CODE_LIST = new ArrayList<String>();
+	public static final List<DataStructureInfoEntity> SELECTED_DATA_STRUCTURE_LIST = new ArrayList<DataStructureInfoEntity>();
 	
 	public static final Map<String,ResultDataEntity> RESULT_DATA_ENTITY_MAP = new HashMap<String, ResultDataEntity>();
 	
