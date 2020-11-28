@@ -10,11 +10,11 @@ import com.pro.inter.ListInterface;
  */
 public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
 
-	private static final int INITIAL_CAPACITY = 100;
-	private Object[] elements;
-	private int elementsNum = 0;
-	private boolean found;
-	private int location;
+	protected static final int INITIAL_CAPACITY = 100;
+	protected Object[] elements;
+	protected int elementsNum = 0;
+	protected boolean found;
+	protected int location;
 	
 	public ArrayUnBoundedListSortedImpl() {
 		this.elements = new Object[INITIAL_CAPACITY];
@@ -109,7 +109,7 @@ public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements Li
 	}
 	
 	/**
-	 * Get a element data by target element.(The method's complexity is O(N))
+	 * Get a element data by target element.(The method's complexity is O(log2N))
 	 * @param target
 	 * @return target data
 	 */

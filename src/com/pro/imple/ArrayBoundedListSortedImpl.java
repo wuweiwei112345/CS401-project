@@ -10,11 +10,11 @@ import com.pro.inter.ListInterface;
  */
 public class ArrayBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
 
-	private static final int DEFAULT_MAX_SIZE = 10;
-	private Object[] elements;
-	private int elementsNum = 0;
-	private boolean found;
-	private int location;
+	protected static final int DEFAULT_MAX_SIZE = 10;
+	protected Object[] elements;
+	protected int elementsNum = 0;
+	protected boolean found;
+	protected int location;
 	
 	public ArrayBoundedListSortedImpl() {
 		this.elements = new Object[DEFAULT_MAX_SIZE];
@@ -83,7 +83,7 @@ public class ArrayBoundedListSortedImpl<T extends Comparable<T>> implements List
 	}
 	
 	/**
-	 * Get a element data by target element.(The method's complexity is O(N))
+	 * Get a element data by target element.(The method's complexity is O(log2N))
 	 * @param target
 	 * @return target data
 	 */
