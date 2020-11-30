@@ -113,7 +113,7 @@ public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements Li
 	 * @param target
 	 * @return target data
 	 */
-	public void find(T target) {
+	private void find(T target) {
 		this.found = false;
 		this.location = 0;
 		if(!this.isEmpty()) {

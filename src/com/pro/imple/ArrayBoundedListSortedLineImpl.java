@@ -21,17 +21,19 @@ public class ArrayBoundedListSortedLineImpl<T extends Comparable<T>> extends Arr
 	 * @param target
 	 * @return target data
 	 */
-	@Override
-	public void find(T target) {
+	private void find(T target) {
 		this.found = false;
 		this.location = 0;
 		if(!this.isEmpty()) {
 			int elementsNum = this.elementsNum;
 			int index = 0;
 			while(index < elementsNum) {
-				if(this.elements[index] == target) {
+				int result = target.compareTo((T)this.elements[index]);
+				if(result == 0) {
 					this.found = true;
 					this.location = index;
+				}else if(result > 0) {
+					this.location = index + 1;
 				}
 				index++;
 			}
