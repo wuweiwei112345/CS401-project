@@ -32,6 +32,7 @@ public class LinkedUnBoundedListSortedImpl<T extends Comparable<T>> implements L
 			newNode.setNext(this.preNode.getNext());
 			this.preNode.setNext(newNode);
 		}
+		this.numElements++;
 		return true;
 	}
 
@@ -67,6 +68,7 @@ public class LinkedUnBoundedListSortedImpl<T extends Comparable<T>> implements L
 			this.find(target);
 			if(this.found) {
 				preNode.setNext(this.locationNode.getNext());
+				this.numElements--;
 			}
 		}
 		return this.found;
