@@ -56,7 +56,7 @@ import javax.swing.JTextArea;
 
 /**
  * @describe Window program
- * @author Wei Wu,Ye Yu
+ * @author Wei Wu,Ye Yu 
  */
 public class MainApplication {
 
