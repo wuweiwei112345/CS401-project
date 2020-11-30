@@ -100,17 +100,56 @@ public class StaticDataEntity {
 		dataStructureInfoEntity9.setIsSorted(2);
 		dataStructureInfoEntity9.setSearchType(2);
 		
+		DataStructureInfoEntity dataStructureInfoEntity10 = new DataStructureInfoEntity();
+		dataStructureInfoEntity10.setCode(DataStructureCodeEnum.ARRAY_BOUNDED_LIST_SORTED_LINE.getCode());
+		dataStructureInfoEntity10.setDescribe("Array bounded list sorted line");
+		dataStructureInfoEntity10.setBigO("O(N)");
+		dataStructureInfoEntity10.setAnalysisText("AnalysisText O(N)");
+		dataStructureInfoEntity10.setIsBounded(1);
+		dataStructureInfoEntity10.setIsSorted(1);
+		dataStructureInfoEntity10.setSearchType(1);
+		
+		DataStructureInfoEntity dataStructureInfoEntity11 = new DataStructureInfoEntity();
+		dataStructureInfoEntity11.setCode(DataStructureCodeEnum.ARRAY_UNBOUNDED_LIST_SORTED_LINE.getCode());
+		dataStructureInfoEntity11.setDescribe("Array unbounded list sorted line");
+		dataStructureInfoEntity11.setBigO("O(N)");
+		dataStructureInfoEntity11.setAnalysisText("AnalysisText O(N)");
+		dataStructureInfoEntity11.setIsBounded(2);
+		dataStructureInfoEntity11.setIsSorted(1);
+		dataStructureInfoEntity11.setSearchType(1);
+		
+		DataStructureInfoEntity dataStructureInfoEntity12 = new DataStructureInfoEntity();
+		dataStructureInfoEntity12.setCode(DataStructureCodeEnum.LINKED_BOUNDED_LIST_SORTED_BINARY.getCode());
+		dataStructureInfoEntity12.setDescribe("Linked bounded list sorted binary");
+		dataStructureInfoEntity12.setBigO("O(log2N)");
+		dataStructureInfoEntity12.setAnalysisText("AnalysisText O(log2N)");
+		dataStructureInfoEntity12.setIsBounded(1);
+		dataStructureInfoEntity12.setIsSorted(1);
+		dataStructureInfoEntity12.setSearchType(2);
+		
+		DataStructureInfoEntity dataStructureInfoEntity13 = new DataStructureInfoEntity();
+		dataStructureInfoEntity13.setCode(DataStructureCodeEnum.LINKED_UNBOUNDED_LIST_SORTED_BINARY.getCode());
+		dataStructureInfoEntity13.setDescribe("Linked unbouded list sorted binary");
+		dataStructureInfoEntity13.setBigO("O(log2N)");
+		dataStructureInfoEntity13.setAnalysisText("AnalysisText O(log2N)");
+		dataStructureInfoEntity13.setIsBounded(2);
+		dataStructureInfoEntity13.setIsSorted(1);
+		dataStructureInfoEntity13.setSearchType(2);
 		
 		//Array
 		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity1.getCode(), dataStructureInfoEntity1);
 		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity2.getCode(), dataStructureInfoEntity2);
 		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity3.getCode(), dataStructureInfoEntity3);
 		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity4.getCode(), dataStructureInfoEntity4);
+		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity10.getCode(), dataStructureInfoEntity10);
+		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity11.getCode(), dataStructureInfoEntity11);
 		//Linked
 		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity5.getCode(), dataStructureInfoEntity5);
 		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity6.getCode(), dataStructureInfoEntity6);
 		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity7.getCode(), dataStructureInfoEntity7);
 		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity8.getCode(), dataStructureInfoEntity8);
+		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity12.getCode(), dataStructureInfoEntity12);
+		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity13.getCode(), dataStructureInfoEntity13);
 		//Tree
 		DATA_STRUCTURE_MAP.put(dataStructureInfoEntity9.getCode(), dataStructureInfoEntity9);
 	}

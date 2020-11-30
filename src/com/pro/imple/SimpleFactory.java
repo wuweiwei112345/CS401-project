@@ -24,19 +24,31 @@ public class SimpleFactory {
 				list = new ArrayUnBoundedListImpl<String>();
 				break;
 			case "000005":
-				list = null;
+				list = new LinkedBoundedListSortedImpl<String>(maxSize);
 				break;
 			case "000006":
-				list = null;
+				list = new LinkedBoundedListImpl<String>(maxSize);
 				break;
 			case "000007":
-				list = null;
+				list = new LinkedUnBoundedListSortedImpl<String>();
 				break;
 			case "000008":
-				list = null;
+				list = new LinkedUnBoundedListImpl<String>();
 				break;
 			case "000009":
 				list = new BinarySearchTree<String>();
+				break;
+			case "000010":
+				list = new ArrayBoundedListSortedLineImpl<String>(maxSize);
+				break;
+			case "000011":
+				list = new ArrayUnBoundedListSortedLineImpl<String>();
+				break;
+			case "000012":
+				list = new LinkedBoundedListSortedBinaryImpl<String>(maxSize);
+				break;
+			case "000013":
+				list = new LinkedUnBoundedListSortedBinaryImpl<String>();
 				break;
 			default:
 				break;
@@ -60,19 +72,31 @@ public class SimpleFactory {
 				list = new ArrayUnBoundedListImpl<Integer>();
 				break;
 			case "000005":
-				list = null;
+				list = new LinkedBoundedListSortedImpl<Integer>(maxSize);
 				break;
 			case "000006":
-				list = null;
+				list = new LinkedBoundedListImpl<Integer>(maxSize);
 				break;
 			case "000007":
-				list = null;
+				list = new LinkedUnBoundedListSortedImpl<Integer>();
 				break;
 			case "000008":
-				list = null;
+				list = new LinkedUnBoundedListImpl<Integer>();
 				break;
 			case "000009":
 				list = new BinarySearchTree<Integer>();
+				break;
+			case "000010":
+				list = new ArrayBoundedListSortedLineImpl<Integer>(maxSize);
+				break;
+			case "000011":
+				list = new ArrayUnBoundedListSortedLineImpl<Integer>();
+				break;
+			case "000012":
+				list = new LinkedBoundedListSortedBinaryImpl<Integer>(maxSize);
+				break;
+			case "000013":
+				list = new LinkedUnBoundedListSortedBinaryImpl<Integer>();
 				break;
 			default:
 				break;
