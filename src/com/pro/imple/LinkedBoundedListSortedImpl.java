@@ -36,6 +36,7 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 			newNode.setNext(this.preNode.getNext());
 			this.preNode.setNext(newNode);
 		}
+		this.numElements++;
 		return true;
 	}
 
@@ -71,6 +72,7 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 			this.find(target);
 			if(this.found) {
 				preNode.setNext(this.locationNode.getNext());
+				this.numElements--;
 			}
 		}
 		return this.found;
