@@ -14,7 +14,6 @@ import com.pro.imple.SimpleFactory;
 import com.pro.inter.ListInterface;
 import java.awt.Font;
 import java.awt.Image;
-
 import javax.swing.JCheckBox;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -27,7 +26,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Observer;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,14 +52,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.awt.Choice;
-import java.awt.Component;
-import javax.swing.event.MenuListener;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuKeyListener;
-import javax.swing.event.MenuKeyEvent;
-import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
-
 
 public class MainApplication {
 
@@ -469,18 +460,18 @@ public class MainApplication {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				JFileChooser chooser = new JFileChooser();          //设置选择器
-				chooser.setMultiSelectionEnabled(true);             //设为多选
-				int returnVal = chooser.showOpenDialog(btnNewButton);     //是否打开文件选择框
-				if (returnVal == JFileChooser.APPROVE_OPTION) {     //如果符合文件类型
-					String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径
+				JFileChooser chooser = new JFileChooser();          //璁剧疆閫夋嫨鍣�
+				chooser.setMultiSelectionEnabled(true);             //璁句负澶氶��
+				int returnVal = chooser.showOpenDialog(btnNewButton);     //鏄惁鎵撳紑鏂囦欢閫夋嫨妗�
+				if (returnVal == JFileChooser.APPROVE_OPTION) {     //濡傛灉绗﹀悎鏂囦欢绫诲瀷
+					String filepath = chooser.getSelectedFile().getAbsolutePath();      //鑾峰彇缁濆璺緞
 					textField.setText(filepath);
 					
 					StringBuffer stringDataSb = new StringBuffer();
 					File file = new File(filepath);
 					Reader reader = null;
 					try {
-						// 一次读一个字符
+						// 涓�娆¤涓�涓瓧绗�
 						reader = new InputStreamReader(new FileInputStream(file));
 						int tempInt;
 						char tempChar;
@@ -495,7 +486,7 @@ public class MainApplication {
 					}
 					
 					//System.out.println(filepath);
-					//System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //输出相对路径
+					//System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //杈撳嚭鐩稿璺緞
 				}
 				
 			}
@@ -548,12 +539,12 @@ public class MainApplication {
 					return;
 				}
 				
-				//实例化静态数据
+				//瀹炰緥鍖栭潤鎬佹暟鎹�
 				StaticDataEntity staticDataEntity = new StaticDataEntity();
 				
-				//判断选中的单选按钮
+				//鍒ゆ柇閫変腑鐨勫崟閫夋寜閽�
 				if(rdbtnNewRadioButton.isSelected()) {
-					//数据验证
+					//鏁版嵁楠岃瘉
 					if("".equals(textField.getText())) {
 						JOptionPane.showMessageDialog(null, "Please select a file.","message",1);
 						return;
@@ -565,7 +556,7 @@ public class MainApplication {
 					String[] stringDataArr = textArea.getText().split(textField_1.getText());
 					secondStepDataEntity = staticDataEntity.getSecondStepDataStringTypeEntity(1, textField.getText(), textField_1.getText(), stringDataArr);
 				}else if(rdbtnNewRadioButton_1.isSelected()) {
-					//获取输入框中的测试随机数字数据转换成Integer类型数组并存储
+					//鑾峰彇杈撳叆妗嗕腑鐨勬祴璇曢殢鏈烘暟瀛楁暟鎹浆鎹㈡垚Integer绫诲瀷鏁扮粍骞跺瓨鍌�
 					String[] numberArr = textArea.getText().split(",");
 					Integer[] numberList = new Integer[numberArr.length];
 					for(int i = 0 ; i < numberArr.length ; i++) {
