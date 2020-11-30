@@ -62,6 +62,7 @@ import javax.swing.event.MenuKeyEvent;
 import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
 
+
 public class MainApplication {
 
 	private JFrame frmPerformanceAnalysisOf;
@@ -468,18 +469,18 @@ public class MainApplication {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				JFileChooser chooser = new JFileChooser();          //ÉèÖÃÑ¡ÔñÆ÷
-				chooser.setMultiSelectionEnabled(true);             //ÉèÎª¶àÑ¡
-				int returnVal = chooser.showOpenDialog(btnNewButton);     //ÊÇ·ñ´ò¿ªÎÄ¼şÑ¡Ôñ¿ò
-				if (returnVal == JFileChooser.APPROVE_OPTION) {     //Èç¹û·ûºÏÎÄ¼şÀàĞÍ
-					String filepath = chooser.getSelectedFile().getAbsolutePath();      //»ñÈ¡¾ø¶ÔÂ·¾¶
+				JFileChooser chooser = new JFileChooser();          //è®¾ç½®é€‰æ‹©å™¨
+				chooser.setMultiSelectionEnabled(true);             //è®¾ä¸ºå¤šé€‰
+				int returnVal = chooser.showOpenDialog(btnNewButton);     //æ˜¯å¦æ‰“å¼€æ–‡ä»¶é€‰æ‹©æ¡†
+				if (returnVal == JFileChooser.APPROVE_OPTION) {     //å¦‚æœç¬¦åˆæ–‡ä»¶ç±»å‹
+					String filepath = chooser.getSelectedFile().getAbsolutePath();      //è·å–ç»å¯¹è·¯å¾„
 					textField.setText(filepath);
 					
 					StringBuffer stringDataSb = new StringBuffer();
 					File file = new File(filepath);
 					Reader reader = null;
 					try {
-						// Ò»´Î¶ÁÒ»¸ö×Ö·û
+						// ä¸€æ¬¡è¯»ä¸€ä¸ªå­—ç¬¦
 						reader = new InputStreamReader(new FileInputStream(file));
 						int tempInt;
 						char tempChar;
@@ -494,7 +495,7 @@ public class MainApplication {
 					}
 					
 					//System.out.println(filepath);
-					//System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //Êä³öÏà¶ÔÂ·¾¶
+					//System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //è¾“å‡ºç›¸å¯¹è·¯å¾„
 				}
 				
 			}
@@ -547,12 +548,12 @@ public class MainApplication {
 					return;
 				}
 				
-				//ÊµÀı»¯¾²Ì¬Êı¾İ
+				//å®ä¾‹åŒ–é™æ€æ•°æ®
 				StaticDataEntity staticDataEntity = new StaticDataEntity();
 				
-				//ÅĞ¶ÏÑ¡ÖĞµÄµ¥Ñ¡°´Å¥
+				//åˆ¤æ–­é€‰ä¸­çš„å•é€‰æŒ‰é’®
 				if(rdbtnNewRadioButton.isSelected()) {
-					//Êı¾İÑéÖ¤
+					//æ•°æ®éªŒè¯
 					if("".equals(textField.getText())) {
 						JOptionPane.showMessageDialog(null, "Please select a file.","message",1);
 						return;
@@ -564,7 +565,7 @@ public class MainApplication {
 					String[] stringDataArr = textArea.getText().split(textField_1.getText());
 					secondStepDataEntity = staticDataEntity.getSecondStepDataStringTypeEntity(1, textField.getText(), textField_1.getText(), stringDataArr);
 				}else if(rdbtnNewRadioButton_1.isSelected()) {
-					//»ñÈ¡ÊäÈë¿òÖĞµÄ²âÊÔËæ»úÊı×ÖÊı¾İ×ª»»³ÉIntegerÀàĞÍÊı×é²¢´æ´¢
+					//è·å–è¾“å…¥æ¡†ä¸­çš„æµ‹è¯•éšæœºæ•°å­—æ•°æ®è½¬æ¢æˆIntegerç±»å‹æ•°ç»„å¹¶å­˜å‚¨
 					String[] numberArr = textArea.getText().split(",");
 					Integer[] numberList = new Integer[numberArr.length];
 					for(int i = 0 ; i < numberArr.length ; i++) {
