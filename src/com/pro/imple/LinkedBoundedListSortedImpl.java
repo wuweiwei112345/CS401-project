@@ -26,8 +26,8 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 	protected boolean found;
 	protected LLNode<T> locationNode;
 	protected LLNode<T> preNode;
-	private int numElements;
-	private int location;
+	protected int numElements;
+	protected int location;
 	
 	@Override
 	public boolean add(T element) throws OverflowException {
