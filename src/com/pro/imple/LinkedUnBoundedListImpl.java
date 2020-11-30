@@ -7,8 +7,8 @@ import com.pro.inter.ListInterface;
 import com.pro.entity.LLNode;
 
 /**
- * @describe 链表无界列表实现
- * @author wuwei
+ * @describe The implements is linked-based's unbounded unsorted list
+ * @author Ye Yu
  */
 public class LinkedUnBoundedListImpl<T extends Comparable<T>> implements ListInterface<T> {
 //	private int maxSize;

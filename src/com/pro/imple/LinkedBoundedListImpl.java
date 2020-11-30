@@ -6,8 +6,8 @@ import com.pro.exception.UnderflowException;
 import com.pro.inter.ListInterface;
 
 /**
- * @describe 链表有界列表实现
- * @author wu wei
+ * @describe The implements is linked-based's bounded unsorted list
+ * @author Ye Yu
  */
 public class LinkedBoundedListImpl<T extends Comparable<T>> implements ListInterface<T> {
 
