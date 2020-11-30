@@ -10,6 +10,14 @@ import com.pro.inter.ListInterface;
  * @author Ye Yu
  */
 public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
+	
+	public LinkedBoundedListSortedImpl() {
+		this.maxSize = DEFAULT_MAX_SIZE;
+	}
+	
+	public LinkedBoundedListSortedImpl(int maxSize) {
+		this.maxSize = maxSize;
+	}
 
 	protected static final int DEFAULT_MAX_SIZE = 10;
 	protected int maxSize = 0;
@@ -33,8 +41,13 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 		}else {
 			this.find(element);
 			LLNode<T> newNode = new LLNode<T>(element);
-			newNode.setNext(this.preNode.getNext());
-			this.preNode.setNext(newNode);
+			if(this.locationNode == null) {
+				newNode.setNext(this.head);
+				this.head = newNode;
+			}else {
+				newNode.setNext(this.locationNode.getNext());
+				this.locationNode.setNext(newNode);
+			}
 		}
 		this.numElements++;
 		return true;
@@ -84,25 +97,29 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 	 * @return target data
 	 */
 	private void find(T target) {
-		this.found = false;
-		this.location = 0;
 		if(!(isEmpty()))
 		{
-			LLNode<T> node = this.head;
+			this.found = false;
+			this.location = -1;
+			this.preNode = null;
+			this.locationNode = null;
+			LLNode<T> currentNode = this.head;
 			int index = 0;
-			while(node != null)
+			while(currentNode != null)
 			{
-				if(target.compareTo(this.head.getInfo()) == 0)
+				if(target.compareTo(currentNode.getInfo()) == 0)
 				{
 					this.found = true;
 					this.location=index;
-					this.locationNode = node;
-				}else if(target.compareTo(node.getInfo()) > 0){
+					this.locationNode = currentNode;
+					break;
+				}else if(target.compareTo(currentNode.getInfo()) > 0)
+				{
 					this.location = index;
-					this.locationNode = node;
+					this.locationNode = currentNode;
 				}
-				this.preNode = node;
-				node = node.getNext();
+				this.preNode = currentNode;
+				currentNode = currentNode.getNext();
 				index++;
 			}
 		}

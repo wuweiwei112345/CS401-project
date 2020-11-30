@@ -10,7 +10,7 @@ import com.pro.inter.ListInterface;
  * @author Ye Yu
  */
 public class LinkedUnBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
-
+	
 	protected static final int DEFAULT_MAX_SIZE = 10;
 	protected LLNode<T> head;
 	protected int elementsNum = 0;
@@ -29,8 +29,13 @@ public class LinkedUnBoundedListSortedImpl<T extends Comparable<T>> implements L
 		}else {
 			this.find(element);
 			LLNode<T> newNode = new LLNode<T>(element);
-			newNode.setNext(this.preNode.getNext());
-			this.preNode.setNext(newNode);
+			if(this.locationNode == null) {
+				newNode.setNext(this.head);
+				this.head = newNode;
+			}else {
+				newNode.setNext(this.locationNode.getNext());
+				this.locationNode.setNext(newNode);
+			}
 		}
 		this.numElements++;
 		return true;
@@ -73,29 +78,36 @@ public class LinkedUnBoundedListSortedImpl<T extends Comparable<T>> implements L
 		}
 		return this.found;
 	}
+
 	/**
-	 * Get a element data by target element.(The method's complexity is O(log2N))
+	 * Get a element data by target element.(The method's complexity is O(N))
 	 * @param target
 	 * @return target data
 	 */
 	private void find(T target) {
-		this.found = false;
-		this.location = 0;
 		if(!(isEmpty()))
 		{
-			LLNode<T> newNode = this.head;
+			this.found = false;
+			this.location = -1;
+			this.preNode = null;
+			this.locationNode = null;
+			LLNode<T> currentNode = this.head;
 			int index = 0;
-			while(locationNode != null)
+			while(currentNode != null)
 			{
-				if(target.compareTo(this.head.getInfo()) == 0)
+				if(target.compareTo(currentNode.getInfo()) == 0)
 				{
 					this.found = true;
 					this.location=index;
-				}else if(target.compareTo(this.head.getInfo()) > 0){
-					this.location = index +1;
-				}else {
-					this.found = false;
+					this.locationNode = currentNode;
+					break;
+				}else if(target.compareTo(currentNode.getInfo()) > 0)
+				{
+					this.location = index;
+					this.locationNode = currentNode;
 				}
+				this.preNode = currentNode;
+				currentNode = currentNode.getNext();
 				index++;
 			}
 		}
