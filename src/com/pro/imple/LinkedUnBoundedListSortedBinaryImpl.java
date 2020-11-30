@@ -17,8 +17,7 @@ public class LinkedUnBoundedListSortedBinaryImpl<T extends Comparable<T>> extend
 	 * @param target
 	 * @return target data
 	 */
-	@Override
-	public void find(T target) {
+	private void find(T target) {
 		this.found = false;
 		this.locationNode = null;
 		this.preNode = null;

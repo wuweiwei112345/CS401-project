@@ -59,7 +59,7 @@ public class LinkedBoundedListImpl<T extends Comparable<T>> implements ListInter
 		return true;
 	}
 
-	public void find(T target) {
+	private void find(T target) {
 		// TODO Auto-generated method stub
 		this.found = false;
 		this.location = null;

@@ -81,7 +81,7 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 	 * @param target
 	 * @return target data
 	 */
-	public void find(T target) {
+	private void find(T target) {
 		this.found = false;
 		this.location = 0;
 		if(!(isEmpty()))

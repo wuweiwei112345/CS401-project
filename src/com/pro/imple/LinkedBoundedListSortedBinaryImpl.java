@@ -23,8 +23,7 @@ public class LinkedBoundedListSortedBinaryImpl<T extends Comparable<T>> extends 
 	 * @param target
 	 * @return target data
 	 */
-	@Override
-	public void find(T target) {
+	private void find(T target) {
 		this.found = false;
 		this.locationNode = null;
 		this.preNode = null;

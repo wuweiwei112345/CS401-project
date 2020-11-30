@@ -44,7 +44,7 @@ public class LinkedUnBoundedListImpl<T extends Comparable<T>> implements ListInt
 		return true;
 	}
 
-	public int find(T element) {
+	private int find(T element) {
 		this.found = false;
 		this.location = null;
 		this.previous = null;
