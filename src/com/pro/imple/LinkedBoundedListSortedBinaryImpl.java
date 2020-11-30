@@ -4,7 +4,7 @@ import com.pro.entity.LLNode;
 
 /**
  * @describe The implements is linked-based's bounded sorted binary search list
- * @author Wei Wu
+ * @author Ye Yu
  */
 public class LinkedBoundedListSortedBinaryImpl<T extends Comparable<T>> extends LinkedBoundedListSortedImpl<T>{
 

@@ -54,6 +54,10 @@ import java.io.Reader;
 import java.awt.Choice;
 import javax.swing.JTextArea;
 
+/**
+ * @describe Window program
+ * @author Wei Wu,Ye Yu
+ */
 public class MainApplication {
 
 	private JFrame frmPerformanceAnalysisOf;
