@@ -154,7 +154,7 @@ public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements Li
 	
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer("");
+		StringBuffer sb = new StringBuffer("[");
 		if(!this.isEmpty()) {
 			//The list is empty
 			int index = 0;
@@ -163,13 +163,13 @@ public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements Li
 			while(index < arrNum) {
 				//Get element and append into the sb variable
 				if(this.elements[index] != null) {
-					sb.append(this.elements[index]).append(",");
+					sb.append(",").append(this.elements[index]);
 				}
 				index++;
 			}
 		}
 		//Return the string of sb
-		return sb.toString();
+		return sb.append("]").toString().replaceFirst(",", "");
 	}
 
 }
