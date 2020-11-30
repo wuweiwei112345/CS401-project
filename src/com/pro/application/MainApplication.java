@@ -13,7 +13,10 @@ import com.pro.entity.StaticDataEntity;
 import com.pro.imple.SimpleFactory;
 import com.pro.inter.ListInterface;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JCheckBox;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -24,6 +27,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Observer;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,10 +50,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.awt.Choice;
 import java.awt.Component;
+import javax.swing.event.MenuListener;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuKeyListener;
+import javax.swing.event.MenuKeyEvent;
+import javax.swing.JEditorPane;
+import javax.swing.JTextArea;
 
 public class MainApplication {
 
@@ -61,8 +72,6 @@ public class MainApplication {
 	private JPanel panel_2;
 	private JPanel panel_1;
 	private JLabel label;
-	private JPanel panel_3;
-	private JButton btnConfirmAndNext;
 	private JPanel panel_4;
 	private JPanel panel_5;
 	private JLabel label_1;
@@ -80,7 +89,10 @@ public class MainApplication {
 	private Choice choice;
 	private Choice choice1;
 	private Choice choice_1;
-	List<DataStructureInfoEntity> dataStructureInfoEntityList = new ArrayList<DataStructureInfoEntity>();
+	private List<DataStructureInfoEntity> dataStructureInfoEntityList = new ArrayList<DataStructureInfoEntity>();
+	private JPanel panel_12;
+	private JButton button_2;
+	private JTextArea textArea_2;
 
 	/**
 	 * Launch the application.
@@ -111,7 +123,7 @@ public class MainApplication {
 	private void initialize() {
 		frmPerformanceAnalysisOf = new JFrame();
 		frmPerformanceAnalysisOf.setResizable(false);
-		frmPerformanceAnalysisOf.setTitle("Data structure performance analysis");
+		frmPerformanceAnalysisOf.setTitle("Performance analysis of data structure");
 		frmPerformanceAnalysisOf.setIconImage(Toolkit.getDefaultToolkit().getImage("G:\\book\\A-\u6211\u7684\u56FE\u7247\\3cb81764d54b35f9b41bdd33f7e3fc65.jpg"));
 		frmPerformanceAnalysisOf.setBounds(100, 100, 1184, 730);
 		frmPerformanceAnalysisOf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,6 +147,14 @@ public class MainApplication {
 		menuBar.add(mnNewMenu);
 		
 		mntmNewMenuItem = new JMenuItem("Instructions");
+		mntmNewMenuItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				layeredPane.setLayer(panel_12, 2);
+				
+			}
+		});
 		mntmNewMenuItem.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 22));
 		mnNewMenu.add(mntmNewMenuItem);
 		
@@ -143,17 +163,17 @@ public class MainApplication {
 		
 		panel_2 = new JPanel();
 		layeredPane.setLayer(panel_2, 1);
-		panel_2.setBounds(0, 0, 1162, 643);
+		panel_2.setBounds(0, 0, 1178, 644);
 		layeredPane.add(panel_2);
 		panel_2.setLayout(null);
 		
 		panel_1 = new JPanel();
-		panel_1.setBounds(0, 5, 1162, 580);
+		panel_1.setBounds(0, 5, 1176, 579);
 		panel_2.add(panel_1);
 		panel_1.setLayout(null);
 		
 		label = new JLabel("Step 1, please select data structure (multiple choices are allowed)");
-		label.setBounds(0, 0, 1162, 58);
+		label.setBounds(0, 0, 1176, 58);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("Calibri", Font.BOLD, 26));
 		panel_1.add(label);
@@ -283,8 +303,8 @@ public class MainApplication {
 		choice_1.setFont(new Font("Dialog", Font.PLAIN, 19));
 		choice_1.setBounds(770, 65, 200, 27);
 		choice_1.add("===Search type===");
-		choice_1.add("Linear Search");
-		choice_1.add("Binary Search");
+		choice_1.add("Line search");
+		choice_1.add("Binary search");
 		choice_1.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				
@@ -327,9 +347,9 @@ public class MainApplication {
 							x++;
 						}
 					}
-				}else if("Linear Search".equals(item)) {
+				}else if("Line search".equals(item)) {
 					isSearchType = 1;
-				}else if("Binary Search".equals(item)) {
+				}else if("Binary search".equals(item)) {
 					isSearchType = 2;
 				}
 				
@@ -365,14 +385,11 @@ public class MainApplication {
 		});
 		panel_1.add(choice_1);
 		
-		panel_3 = new JPanel();
-		panel_3.setBounds(960, 590, 200, 39);
-		panel_2.add(panel_3);
-		
-		btnConfirmAndNext = new JButton("Confirm and Next");
-		btnConfirmAndNext.setFont(new Font("Calibri", Font.PLAIN, 20));
-		btnConfirmAndNext.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		button_2 = new JButton("confirm and next");
+		button_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
 				List<DataStructureInfoEntity> selectedDataStructureCodeList = StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST;
 				int size = selectedDataStructureCodeList.size();
 				if(size > 0) {
@@ -381,18 +398,21 @@ public class MainApplication {
 				}else {
 					JOptionPane.showMessageDialog(null, "Please select at least one data structure.", "message", 1);
 				}
+				
 			}
 		});
-		panel_3.add(btnConfirmAndNext);
+		button_2.setFont(new Font("Calibri", Font.PLAIN, 20));
+		button_2.setBounds(910, 595, 230, 33);
+		panel_2.add(button_2);
 		
 		panel_4 = new JPanel();
 		layeredPane.setLayer(panel_4, 0);
-		panel_4.setBounds(0, 0, 1162, 643);
+		panel_4.setBounds(0, 0, 1178, 643);
 		layeredPane.add(panel_4);
 		panel_4.setLayout(null);
 		
 		panel_5 = new JPanel();
-		panel_5.setBounds(5, 5, 1157, 578);
+		panel_5.setBounds(5, 5, 1173, 578);
 		panel_4.add(panel_5);
 		panel_5.setLayout(null);
 		
@@ -406,11 +426,11 @@ public class MainApplication {
 		panel_6.setBounds(250, 103, 773, 38);
 		panel_5.add(panel_6);
 		
-		rdbtnNewRadioButton = new JRadioButton("String Type",true);
+		rdbtnNewRadioButton = new JRadioButton("String type",true);
 		rdbtnNewRadioButton.setName("rdbtnNewRadioButton");
 		rdbtnNewRadioButton.setFont(new Font("Calibri", Font.PLAIN, 21));
 		
-		rdbtnNewRadioButton_1 = new JRadioButton("Integer Type",false);
+		rdbtnNewRadioButton_1 = new JRadioButton("Integer type",false);
 		rdbtnNewRadioButton_1.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				
@@ -442,24 +462,24 @@ public class MainApplication {
 		textField.setFont(new Font("Calibri", Font.PLAIN, 22));
 		textField.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_7.add(textField);
-		textField.setColumns(30);
+		textField.setColumns(15);
 		
-		JButton btnNewButton = new JButton("Selected a file");
+		JButton btnNewButton = new JButton("select a file");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				JFileChooser chooser = new JFileChooser();          //set selector
-				chooser.setMultiSelectionEnabled(true);             //set to multi-selection
-				int returnVal = chooser.showOpenDialog(btnNewButton);     //choose to open the file selection box or not
-				if (returnVal == JFileChooser.APPROVE_OPTION) {     //if file type matches
-					String filepath = chooser.getSelectedFile().getAbsolutePath();      //get absolute path
+				JFileChooser chooser = new JFileChooser();          //设置选择器
+				chooser.setMultiSelectionEnabled(true);             //设为多选
+				int returnVal = chooser.showOpenDialog(btnNewButton);     //是否打开文件选择框
+				if (returnVal == JFileChooser.APPROVE_OPTION) {     //如果符合文件类型
+					String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径
 					textField.setText(filepath);
 					
 					StringBuffer stringDataSb = new StringBuffer();
 					File file = new File(filepath);
 					Reader reader = null;
 					try {
-						// read one character each time
+						// 一次读一个字符
 						reader = new InputStreamReader(new FileInputStream(file));
 						int tempInt;
 						char tempChar;
@@ -517,7 +537,7 @@ public class MainApplication {
 		panel_8.setBounds(710, 590, 450, 39);
 		panel_4.add(panel_8);
 		
-		JButton button = new JButton("Confirm and Next");
+		JButton button = new JButton("confirm and next");
 		button.setBounds(200, 5, 230, 33);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -527,12 +547,12 @@ public class MainApplication {
 					return;
 				}
 				
-				//Instantiate static data
+				//实例化静态数据
 				StaticDataEntity staticDataEntity = new StaticDataEntity();
 				
-				//Determine the selected radio button
+				//判断选中的单选按钮
 				if(rdbtnNewRadioButton.isSelected()) {
-					//data validation
+					//数据验证
 					if("".equals(textField.getText())) {
 						JOptionPane.showMessageDialog(null, "Please select a file.","message",1);
 						return;
@@ -544,7 +564,7 @@ public class MainApplication {
 					String[] stringDataArr = textArea.getText().split(textField_1.getText());
 					secondStepDataEntity = staticDataEntity.getSecondStepDataStringTypeEntity(1, textField.getText(), textField_1.getText(), stringDataArr);
 				}else if(rdbtnNewRadioButton_1.isSelected()) {
-					//Get the random test numbers from the input box and convert to an array of Integer type and store
+					//获取输入框中的测试随机数字数据转换成Integer类型数组并存储
 					String[] numberArr = textArea.getText().split(",");
 					Integer[] numberList = new Integer[numberArr.length];
 					for(int i = 0 ; i < numberArr.length ; i++) {
@@ -581,7 +601,7 @@ public class MainApplication {
 		layeredPane.add(panel_10);
 		panel_10.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("Please enter a search target\uFF1A");
+		JLabel lblNewLabel_1 = new JLabel("Please enter a search target data");
 		lblNewLabel_1.setFont(new Font("Calibri", Font.PLAIN, 20));
 		lblNewLabel_1.setBounds(256, 64, 300, 21);
 		panel_10.add(lblNewLabel_1);
@@ -621,7 +641,7 @@ public class MainApplication {
 		            Matcher m = p.matcher(textByField2);
 		            boolean b = m.matches();
 					if(!b) {
-						JOptionPane.showMessageDialog(null, "The search target is wrong.","message",1);
+						JOptionPane.showMessageDialog(null, "The search target is wrongful.","message",1);
 						return;
 					}
 				}
@@ -679,7 +699,7 @@ public class MainApplication {
 				ResultDataEntity resultDataEntity = null;
 				while(iterator.hasNext()) {
 					resultDataEntity = iterator.next();
-					if("O(log(2)(N))".equals(resultDataEntity.getBigO())) {
+					if("O(log2N)".equals(resultDataEntity.getBigO())) {
 						oneLevel.add(resultDataEntity);
 					}else if("O(N)".equals(resultDataEntity.getBigO())) {
 						twoLevel.add(resultDataEntity);
@@ -691,7 +711,7 @@ public class MainApplication {
 				if(oneLevel.size() > 0) {
 					for(int i = 0 ; i < oneLevel.size() ; i++) {
 						ResultDataEntity entity = oneLevel.get(i);
-						resultSb.append("No. " + (i + 1) + ": " + entity.getDataStructureName()).append("\n");
+						resultSb.append("No " + (i + 1) + ". It's " + entity.getDataStructureName()).append("\n");
 						Iterator<Long> timeIterator = entity.getTimeMap().values().iterator();
 						int x = 1;
 						while(timeIterator.hasNext()) {
@@ -702,7 +722,7 @@ public class MainApplication {
 							}
 							x++;
 						}
-						resultSb.append("The Big-O complexity is " + entity.getBigO() + ".");
+						resultSb.append("The big-O is " + entity.getBigO() + ".");
 						resultSb.append("\n\n");
 					}
 				}
@@ -714,12 +734,12 @@ public class MainApplication {
 		btnNewButton_3.setBounds(666, 60, 277, 29);
 		panel_10.add(btnNewButton_3);
 		
-		lblNewLabel_2 = new JLabel("Step 3, enter the target data and start the analysis");
+		lblNewLabel_2 = new JLabel("The third step , is to enter the target character and start the analysis");
 		lblNewLabel_2.setFont(new Font("Calibri", Font.BOLD, 22));
 		lblNewLabel_2.setBounds(181, 0, 875, 21);
 		panel_10.add(lblNewLabel_2);
 		
-		button_1 = new JButton("Back");
+		button_1 = new JButton("back");
 		button_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -734,6 +754,35 @@ public class MainApplication {
 		panel_10.add(button_1);
 		
 		panel_10.add(textArea_1);
+		
+		panel_12 = new JPanel();
+		layeredPane.setLayer(panel_12, -1);
+		panel_12.setBounds(0, 0, 1178, 659);
+		layeredPane.add(panel_12);
+		panel_12.setLayout(null);
+		
+		JButton btnNewButton_4 = new JButton("exit");
+		btnNewButton_4.setFont(new Font("Calibri", Font.PLAIN, 20));
+		btnNewButton_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				layeredPane.setLayer(panel_12, -1);
+				
+			}
+		});
+		btnNewButton_4.setBounds(1000, 595, 123, 33);
+		panel_12.add(btnNewButton_4);
+		
+		try {
+			Image image = ImageIO.read(new File("D:\\download\\ebb3f31c6dabbd7055811e55a2f129c2.jpg"));
+			textArea_2 = new JTextArea();
+			textArea_2.setBounds(0, 0, 1178, 586);
+			textArea_2.prepareImage(image, 100, 50, null);
+			panel_12.add(textArea_2);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		
 		rdbtnNewRadioButton.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
