@@ -10,17 +10,20 @@ import com.pro.inter.ListInterface;
  */
 public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 
-	private static final int INITIAL_CAPACITY = 100;
-	private Object[] elements;
-	private int elementsNum = 0;
-	private boolean found;
-	private int location;
+	private static final int INITIAL_CAPACITY = 100;//默认初始容量
+	private Object[] elements;//元素数组
+	private int elementsNum = 0;//元素数量
+	private boolean found;//find方法查找目标元素结果 true已匹配 false未匹配
+	private int location;//find方法匹配到的元素下标
 	
+	//构造函数
 	public ArrayUnBoundedListImpl() {
+		//实例化元素数组用默认大小
 		this.elements = new Object[INITIAL_CAPACITY];
 	}
 	
 	public ArrayUnBoundedListImpl(int capacity) {
+		//实例化元素数组用size参数
 		this.elements = new Object[capacity];
 	}
 	
