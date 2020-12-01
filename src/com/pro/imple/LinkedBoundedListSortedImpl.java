@@ -11,80 +11,93 @@ import com.pro.inter.ListInterface;
  */
 public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
 	
+	//构造函数
 	public LinkedBoundedListSortedImpl() {
+		//设置最大上限为默认的最大上限
 		this.maxSize = DEFAULT_MAX_SIZE;
 	}
 	
 	public LinkedBoundedListSortedImpl(int maxSize) {
+		//最大上限设置为maxSize变量
 		this.maxSize = maxSize;
 	}
 
-	protected static final int DEFAULT_MAX_SIZE = 10;
-	protected int maxSize = 0;
-	protected LLNode<T> head;
-	protected int elementsNum = 0;
-	protected boolean found;
-	protected LLNode<T> locationNode;
-	protected LLNode<T> preNode;
-	protected int numElements;
-	protected int location;
+	protected static final int DEFAULT_MAX_SIZE = 10;//默认列表元素最大上限
+	protected int maxSize = 0;//列表最大元素上限
+	protected LLNode<T> head;//头部节点引用
+	protected boolean found;//true已匹配 false未匹配
+	protected LLNode<T> locationNode;//已匹配到的节点引用
+	protected LLNode<T> preNode;//前节点引用
+	protected int numElements;//列表节点数量
+	protected int location;//已匹配到的节点下标
 	
 	@Override
 	public boolean add(T element) throws OverflowException {
-		// TODO Auto-generated method stub
 		if(this.isFull()){
 			throw new OverflowException("The list is full.");
 		}
 		if(this.isEmpty())
 		{
+			//列表为空,实例化新节点对象并赋值给head变量
 			this.head = new LLNode<T>(element);
 		}else {
+			//调用find方法查找element适合插入的位置
 			this.find(element);
+			//声明并实例化新节点
 			LLNode<T> newNode = new LLNode<T>(element);
 			if(this.locationNode == null) {
+				//将新节点作为头部插入到列表中
 				newNode.setNext(this.head);
 				this.head = newNode;
 			}else {
+				//将新节点插入到列表中
 				newNode.setNext(this.locationNode.getNext());
 				this.locationNode.setNext(newNode);
 			}
 		}
+		//追加节点数量
 		this.numElements++;
 		return true;
 	}
 
 	@Override
 	public T search(T target) {
-		// TODO Auto-generated method stub
 		if(!(isEmpty())){
+			//列表不为空,调用find方法查找目标对象
 			this.find(target);
 			if(this.found) {
+				//已匹配直接返回匹配节点info值
 				return locationNode.getInfo();
 			}
 		}
+		//return null
 		return null;
 	}
 
 	@Override
 	public boolean contain(T target) {
-		// TODO Auto-generated method stub
 		if(!(isEmpty())){
+			//列表不为空,调用find方法查找目标对象
 			this.find(target);
+			//返回查找结果
 			return this.found;
 		}
-			return false;
+		//列表为空,直接返回false
+		return false;
 	}
 
 	@Override
 	public boolean remove(T target) throws UnderflowException {
-		// TODO Auto-generated method stub
 		if(isEmpty())
 		{
 			throw new OverflowException("The list is full.");
 		}else {
+			//列表不为空,调用find方法搜索目标元素
 			this.find(target);
 			if(this.found) {
+				//已匹配,删除当前节点
 				preNode.setNext(this.locationNode.getNext());
+				//元素数量递减
 				this.numElements--;
 			}
 		}
@@ -99,27 +112,37 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 	private void find(T target) {
 		if(!(isEmpty()))
 		{
+			//列表不为空,还原变量初始值
 			this.found = false;
 			this.location = -1;
 			this.preNode = null;
 			this.locationNode = null;
+			//获取头部节点引用
 			LLNode<T> currentNode = this.head;
+			//初始化index变量
 			int index = 0;
+			//循环(当currentNode != null不成立时停止)
 			while(currentNode != null)
 			{
 				if(target.compareTo(currentNode.getInfo()) == 0)
 				{
+					//目标值等于对比值
 					this.found = true;
 					this.location=index;
 					this.locationNode = currentNode;
+					//结束循环
 					break;
 				}else if(target.compareTo(currentNode.getInfo()) > 0)
 				{
+					//目标值大于对比值
 					this.location = index;
 					this.locationNode = currentNode;
 				}
+				//当前节点赋值给前节点引用
 				this.preNode = currentNode;
+				//获得当前节点的下一个节点
 				currentNode = currentNode.getNext();
+				//index递增
 				index++;
 			}
 		}
@@ -127,33 +150,35 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 
 	@Override
 	public boolean isFull() {
-		// TODO Auto-generated method stub
 		return this.numElements == this.maxSize;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
 		return this.numElements == 0;
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
 		return this.numElements;
 	}
 	
-    public String toString() {
+	public String toString() {
+    	//声明并实例化StringBuffer实例
     	StringBuffer sb = new StringBuffer("[");
-    	
+    	//获取头节点引用
         LLNode<T> currentNode = this.head;
+        //循环
         while(currentNode != null)
    		{
+        	//拼接数据
    			sb.append(",").append(currentNode.getInfo());
+   			//获取下一个节点引用
    			currentNode = currentNode.getNext();
    		}
-        
+        //拼接结束符号
         sb.append("]");
+        //返回数据字符
         return sb.toString().replaceFirst(",", "");
     }
 
