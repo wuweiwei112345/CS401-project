@@ -14,10 +14,11 @@ import com.pro.inter.BSTInterface;
  */
 public class BinarySearchTree<T> implements BSTInterface<T> {
 
-	private BSTTreeNode<T> root;
-	private Comparator<T> comp;
-	private boolean found;
+	private BSTTreeNode<T> root;//树的根节点
+	private Comparator<T> comp;//比较器
+	private boolean found;//true 表示匹配成功 false表示匹配失败
 	
+	//构造函数
 	public BinarySearchTree() {
 		this.root = null;
 		comp = new Comparator<T>() {
