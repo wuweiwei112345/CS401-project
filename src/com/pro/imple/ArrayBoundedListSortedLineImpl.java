@@ -2,7 +2,7 @@ package com.pro.imple;
 
 /**
  * @describe The implements is array-based's bounded sorted line search list
- * @author Wei Wu
+ * @author Wei Wu 
  */
 public class ArrayBoundedListSortedLineImpl<T extends Comparable<T>> extends ArrayBoundedListSortedImpl<T>{
 	
