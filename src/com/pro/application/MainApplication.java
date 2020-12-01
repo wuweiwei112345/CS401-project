@@ -469,6 +469,13 @@ public class MainApplication {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				//验证分隔符是否输入
+				String textField_1Str = textField_1.getText();
+				if(textField_1Str == null || "".equals(textField_1Str)) {
+					JOptionPane.showMessageDialog(null, "Please enter a separator.","message",1);
+					return;
+				}
+				
 				JFileChooser chooser = new JFileChooser();
 				chooser.setMultiSelectionEnabled(true);
 				int returnVal = chooser.showOpenDialog(btnNewButton);
@@ -488,6 +495,13 @@ public class MainApplication {
 							stringDataSb.append(tempChar);
 						}
 						reader.close();
+						
+						String[] strArr = stringDataSb.toString().split(textField_1Str);
+						stringDataSb = new StringBuffer();
+						for(int i = 0 ; i < strArr.length ; i++) {
+							stringDataSb.append(strArr[i]).append(textField_1Str);
+						}
+						
 						textArea.setText(stringDataSb.toString());
 					} catch (Exception e1) {
 						e1.printStackTrace();
