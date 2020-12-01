@@ -151,4 +151,5 @@ public class LinkedUnBoundedListImpl<T extends Comparable<T>> implements ListInt
         //返回数据字符
         return sb.toString().replaceFirst(",", "");
     }
+}
 
