@@ -55,4 +55,10 @@ public interface ListInterface<T> {
 	 */
 	public int size();
 	
+	/**
+	 * Get the number of steps after the search method is executed
+	 * @return step number
+	 */
+	public int getSearchStepNum();
+	
 }
