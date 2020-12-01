@@ -38,7 +38,7 @@ public class LinkedBoundedListSortedBinaryImpl<T extends Comparable<T>> extends 
 			//起始下标
 			int startIndex = 0;
 			//结束下标
-			int endIndex = this.elementsNum - 1;
+			int endIndex = this.numElements - 1;
 			//中间下标
 			int middleIndex = 0;
 			//循环(当startIndex < endIndex == true 时停止)
