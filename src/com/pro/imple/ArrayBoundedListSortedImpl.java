@@ -10,17 +10,20 @@ import com.pro.inter.ListInterface;
  */
 public class ArrayBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
 
-	protected static final int DEFAULT_MAX_SIZE = 10;
-	protected Object[] elements;
-	protected int elementsNum = 0;
-	protected boolean found;
-	protected int location;
+	protected static final int DEFAULT_MAX_SIZE = 10;//默认最大元素数量上限
+	protected Object[] elements;//元素数组
+	protected int elementsNum = 0;//元素数量
+	protected boolean found;//find方法查找目标元素结果 true已匹配 false未匹配
+	protected int location;//find方法匹配到的元素下标
 	
+	//构造函数
 	public ArrayBoundedListSortedImpl() {
+		//实例化元素数组用默认大小
 		this.elements = new Object[DEFAULT_MAX_SIZE];
 	}
 	
 	public ArrayBoundedListSortedImpl(int size) {
+		//实例化元素数组用size参数
 		this.elements = new Object[size];
 	}
 	
