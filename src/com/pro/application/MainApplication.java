@@ -469,18 +469,17 @@ public class MainApplication {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				JFileChooser chooser = new JFileChooser();          //璁剧疆閫夋嫨鍣�
-				chooser.setMultiSelectionEnabled(true);             //璁句负澶氶��
-				int returnVal = chooser.showOpenDialog(btnNewButton);     //鏄惁鎵撳紑鏂囦欢閫夋嫨妗�
-				if (returnVal == JFileChooser.APPROVE_OPTION) {     //濡傛灉绗﹀悎鏂囦欢绫诲瀷
-					String filepath = chooser.getSelectedFile().getAbsolutePath();      //鑾峰彇缁濆璺緞
+				JFileChooser chooser = new JFileChooser();
+				chooser.setMultiSelectionEnabled(true);
+				int returnVal = chooser.showOpenDialog(btnNewButton);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					String filepath = chooser.getSelectedFile().getAbsolutePath();
 					textField.setText(filepath);
 					
 					StringBuffer stringDataSb = new StringBuffer();
 					File file = new File(filepath);
 					Reader reader = null;
 					try {
-						// 涓�娆¤涓�涓瓧绗�
 						reader = new InputStreamReader(new FileInputStream(file));
 						int tempInt;
 						char tempChar;
@@ -495,7 +494,7 @@ public class MainApplication {
 					}
 					
 					//System.out.println(filepath);
-					//System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //杈撳嚭鐩稿璺緞
+					//System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());//
 				}
 				
 			}
@@ -684,11 +683,12 @@ public class MainApplication {
 						ResultDataEntity resultDataEntity = new ResultDataEntity();
 						long timeTotal = 0;
 						for(int y = 1; y < 4 ; y++) {
-							long time1 = System.currentTimeMillis() * 1000;
+							long time1 = System.nanoTime();
 							list.search(textByField2);
 							//存入搜索方法处理时间
-							resultDataEntity.getTimeMap().put(y, ((System.currentTimeMillis() * 1000) - time1));
-							timeTotal += time1;
+							long time2 = (System.nanoTime() - time1);
+							resultDataEntity.getTimeMap().put(y, time2);
+							timeTotal += time2;
 						}
 						//将数据分析处理结果存储到数据结果实体中
 						resultDataEntity.getTimeMap().put(4, (timeTotal / 3));
@@ -714,8 +714,9 @@ public class MainApplication {
 						for(int y = 1; y < 4 ; y++) {
 							long time1 = System.nanoTime();
 							list.search(Integer.parseInt(textByField2));
-							resultDataEntity.getTimeMap().put(y, (System.nanoTime() - time1));
-							timeTotal += time1;
+							long time2 = (System.nanoTime() - time1);
+							resultDataEntity.getTimeMap().put(y, time2);
+							timeTotal += time2;
 						}
 						//将数据分析处理结果存储到数据结果实体中
 						resultDataEntity.getTimeMap().put(4, (timeTotal / 3));
@@ -728,28 +729,39 @@ public class MainApplication {
 						StaticDataEntity.RESULT_DATA_ENTITY_MAP.put(entity.getCode(), resultDataEntity);
 					}
 				}
-				//将数据结果进行排序处理
-				List<ResultDataEntity> oneLevel = new ArrayList<ResultDataEntity>();
-				List<ResultDataEntity> twoLevel = new ArrayList<ResultDataEntity>();
+				//将数据结果进行排序处理				
 				Map<String,ResultDataEntity> resultDataMap = StaticDataEntity.RESULT_DATA_ENTITY_MAP;
 				Collection<ResultDataEntity> resultCollection = resultDataMap.values();
 				Iterator<ResultDataEntity> iterator = resultCollection.iterator();
+				ResultDataEntity[] resultArr = new ResultDataEntity[resultCollection.size()];
 				ResultDataEntity resultDataEntity = null;
+				int index = 0;
 				while(iterator.hasNext()) {
 					resultDataEntity = iterator.next();
-					if("O(log2N)".equals(resultDataEntity.getBigO())) {
-						oneLevel.add(resultDataEntity);
-					}else if("O(N)".equals(resultDataEntity.getBigO())) {
-						twoLevel.add(resultDataEntity);
+					resultArr[index] = resultDataEntity;
+					index++;
+				}
+				
+				ResultDataEntity resultDataEntity1 = null;
+				ResultDataEntity resultDataEntity2 = null;
+				ResultDataEntity resultDataEntity3 = null;
+				for(int i = 0 ; i < resultArr.length ; i++) {
+					resultDataEntity1 = resultArr[i];
+					for(int y = 0 ; y < resultArr.length ; y++) {
+						resultDataEntity2 = resultArr[y];
+						if(resultDataEntity1.getTimeMap().get(4) < resultDataEntity2.getTimeMap().get(4)) {
+							resultDataEntity3 = resultArr[y];
+							resultArr[y] = resultArr[i];
+							resultArr[i] = resultDataEntity3;
+						}
 					}
 				}
-				oneLevel.addAll(twoLevel);
 				
 				//数据结果遍历并拼接为输出字符串
 				StringBuffer resultSb = new StringBuffer();
-				if(oneLevel.size() > 0) {
-					for(int i = 0 ; i < oneLevel.size() ; i++) {
-						ResultDataEntity entity = oneLevel.get(i);
+				if(resultArr.length > 0) {
+					for(int i = 0 ; i < resultArr.length ; i++) {
+						ResultDataEntity entity = resultArr[i];
 						resultSb.append("No " + (i + 1) + ". It's " + entity.getDataStructureName()).append("\n");
 						Iterator<Long> timeIterator = entity.getTimeMap().values().iterator();
 						int x = 1;
