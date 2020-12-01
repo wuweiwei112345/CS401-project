@@ -60,35 +60,36 @@ import javax.swing.JTextArea;
  */
 public class MainApplication {
 
-	private JFrame frmPerformanceAnalysisOf;
-	private JMenuBar menuBar;
-	private JMenu mnNewMenu;
-	private JMenuItem mntmNewMenuItem;
-	private JLayeredPane layeredPane;
-	private JPanel panel_2;
-	private JPanel panel_1;
-	private JLabel label;
-	private JPanel panel_4;
-	private JPanel panel_5;
-	private JLabel label_1;
-	private JPanel panel_6;
-	private JRadioButton rdbtnNewRadioButton;
-	private JRadioButton rdbtnNewRadioButton_1;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JButton btnNewButton_1;
-	private SecondStepDataEntity secondStepDataEntity;
-	private JPanel panel_10;
-	private JTextField textField_2;
-	private JLabel lblNewLabel_2;
-	private JButton button_1;
-	private Choice choice;
-	private Choice choice1;
-	private Choice choice_1;
-	private List<DataStructureInfoEntity> dataStructureInfoEntityList = new ArrayList<DataStructureInfoEntity>();
-	private JPanel panel_12;
-	private JButton button_2;
-	private JTextArea textArea_2;
+	private JFrame frmPerformanceAnalysisOf;//性能分析窗体对象
+	private JMenuBar menuBar;//菜单bar
+	private JMenu mnNewMenu;//菜单对象
+	private JMenuItem mntmNewMenuItem;//菜单对象选项
+	private JLayeredPane layeredPane;//叠加层pane对象
+	private JPanel panel_2;//步骤一panel对象
+	private JPanel panel_1;//步骤一中放置其他子控件的panel对象
+	private JLabel label;//步骤一中提示标题变量
+	private JPanel panel_4;//步骤二panel对象
+	private JPanel panel_5;//步骤二中放置其他子控件的子panel对象
+	private JLabel label_1;//步骤二中提示标题变量
+	private JPanel panel_6;//步骤二中放置两个单选按钮的panel对象
+	private JPanel panel_8;//步骤二中放置按钮的panel对象
+	private JRadioButton rdbtnNewRadioButton;//步骤二中的单选按钮(String type)
+	private JRadioButton rdbtnNewRadioButton_1;//步骤二中的单选按钮(Integer type)
+	private JTextField textField;//步骤二中选择数据文件的文件路径展示文本框
+	private JTextField textField_1;//步骤二中用于填写分隔符的文本框
+	private JButton btnNewButton_1;//步骤二中的back按钮
+	private SecondStepDataEntity secondStepDataEntity;//步骤二处理的数据实体
+	private JPanel panel_10;//步骤三panel对象
+	private JTextField textField_2;//步骤三中的搜索数据输入框
+	private JLabel lblNewLabel_2;//步骤三提示标题变量
+	private JButton button_1;//步骤三back按钮
+	private Choice choice;//步骤一下拉选择框(有界性)
+	private Choice choice1;//步骤一下拉选择框(有序性)
+	private Choice choice_1;//步骤一下拉选择框(搜索方式)
+	private List<DataStructureInfoEntity> dataStructureInfoEntityList = new ArrayList<DataStructureInfoEntity>();//数据结构信息实体列表
+	private JPanel panel_12;//暂时忽略
+	private JButton button_2;//第一步骤的confirm and next按钮
+	private JTextArea textArea_2;//暂时忽略
 
 	/**
 	 * Launch the application.
@@ -383,15 +384,19 @@ public class MainApplication {
 		
 		button_2 = new JButton("confirm and next");
 		button_2.addMouseListener(new MouseAdapter() {
+			//步骤一 confirm and next 按钮 单击事件方法
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				//从静态数据中获取已选择的数据结构列表
 				List<DataStructureInfoEntity> selectedDataStructureCodeList = StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST;
+				//从列表中获取列表存储数据个数
 				int size = selectedDataStructureCodeList.size();
 				if(size > 0) {
+					//存储数据个数大于0,切换到步骤二的panel
 					layeredPane.setLayer(panel_2, 0);
 					layeredPane.setLayer(panel_4, 1);
 				}else {
+					//未选中任何数据结构则弹出提示
 					JOptionPane.showMessageDialog(null, "Please select at least one data structure.", "message", 1);
 				}
 				
@@ -529,46 +534,55 @@ public class MainApplication {
 		});
 		panel_9.add(btnNewButton_2);
 		
-		JPanel panel_8 = new JPanel();
+		panel_8 = new JPanel();
 		panel_8.setBounds(710, 590, 450, 39);
 		panel_4.add(panel_8);
 		
 		JButton button = new JButton("confirm and next");
 		button.setBounds(200, 5, 230, 33);
 		button.addActionListener(new ActionListener() {
+			//步骤二 confirm and next 按钮 单击事件 方法 
 			public void actionPerformed(ActionEvent e) {
 				
+				//测试数据非空检查
 				if("".equals(textArea.getText())) {
+					//为空弹出提示框
 					JOptionPane.showMessageDialog(null, "No test data.","message",1);
 					return;
 				}
 				
-				//瀹炰緥鍖栭潤鎬佹暟鎹�
+				//声明并实例化静态数据实体
 				StaticDataEntity staticDataEntity = new StaticDataEntity();
 				
-				//鍒ゆ柇閫変腑鐨勫崟閫夋寜閽�
+				//单选按钮String type被选中
 				if(rdbtnNewRadioButton.isSelected()) {
-					//鏁版嵁楠岃瘉
+					//是否选中了某个路径的文件
 					if("".equals(textField.getText())) {
 						JOptionPane.showMessageDialog(null, "Please select a file.","message",1);
 						return;
 					}
+					//是否填写了分隔符
 					if("".equals(textField_1.getText())) {
 						JOptionPane.showMessageDialog(null, "Please input a separator.","message",1);
 						return;
 					}
+					//用分隔符分割测试数据得到字符串数组
 					String[] stringDataArr = textArea.getText().split(textField_1.getText());
+					//用静态数据库中的getSecondStepDataStringTypeEntity方法得到步骤二数据实体
 					secondStepDataEntity = staticDataEntity.getSecondStepDataStringTypeEntity(1, textField.getText(), textField_1.getText(), stringDataArr);
 				}else if(rdbtnNewRadioButton_1.isSelected()) {
-					//鑾峰彇杈撳叆妗嗕腑鐨勬祴璇曢殢鏈烘暟瀛楁暟鎹浆鎹㈡垚Integer绫诲瀷鏁扮粍骞跺瓨鍌�
+					//用分隔符分割测试数据得到字符串数组
 					String[] numberArr = textArea.getText().split(",");
+					//声明并实例化数字类型数组
 					Integer[] numberList = new Integer[numberArr.length];
+					//将数据存入到数字类型数组中
 					for(int i = 0 ; i < numberArr.length ; i++) {
 						numberList[i] = Integer.parseInt(numberArr[i]);
 					}
+					//用静态数据库中的getSecondStepDataIntegerTypeEntity方法得到步骤二数据实体
 					secondStepDataEntity = staticDataEntity.getSecondStepDataIntegerTypeEntity(2, numberList);
 				}
-				
+				//切换到第三步panel
 				layeredPane.setLayer(panel_4, 0);
 				layeredPane.setLayer(panel_10, 1);
 				
@@ -580,8 +594,9 @@ public class MainApplication {
 		
 		btnNewButton_1 = new JButton("back");
 		btnNewButton_1.addActionListener(new ActionListener() {
+			//步骤二 back按钮 单击事件 方法
 			public void actionPerformed(ActionEvent e) {
-				
+				//切换到步骤一panel
 				layeredPane.setLayer(panel_4, 0);
 				layeredPane.setLayer(panel_2, 1);
 				
@@ -613,62 +628,87 @@ public class MainApplication {
 		
 		JButton btnNewButton_3 = new JButton("Confirm and start analysis");
 		btnNewButton_3.addMouseListener(new MouseAdapter() {
+			//步骤三 Confirm and start analysis 按钮单击 事件 方法
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				//将静态数据库中分析处理结果map数据清空
 				StaticDataEntity.RESULT_DATA_ENTITY_MAP.clear();
+				//数据结果展示文本框清空
 				textArea_1.setText("");
 				textArea_1.append("");
 				String textByField2 = null;
-				//Validation data
+				//搜索目标数据验证
 				if(rdbtnNewRadioButton.isSelected()) {
 					textByField2 = textField_2.getText();
+					//数据非空验证
 					if(null == textByField2 || "".equals(textByField2)) {
+						//弹出提示框
 						JOptionPane.showMessageDialog(null, "The search target is not empty.","message",1);
 						return;
 					}
 				}else if(rdbtnNewRadioButton_1.isSelected()) {
 					textByField2 = textField_2.getText();
+					//数据非空验证
 					if(null == textByField2 || "".equals(textByField2)) {
+						//弹出提示框
 						JOptionPane.showMessageDialog(null, "The search target is not empty.","message",1);
 						return;
 					}
+					//正则表达式对象
 					Pattern p = Pattern.compile("[0-9]|[0-9]\\d+");
 		            Matcher m = p.matcher(textByField2);
+		            //正则验证是否是正整数
 		            boolean b = m.matches();
 					if(!b) {
+						//否,弹出提示框
 						JOptionPane.showMessageDialog(null, "The search target is wrongful.","message",1);
 						return;
 					}
 				}
 				
-				//Analysis and treatment
+				//获取用户选择的数据结构列表
 				List<DataStructureInfoEntity> dataStructureList = StaticDataEntity.SELECTED_DATA_STRUCTURE_LIST;
+				//循环列表中的每一个对象
 				for(DataStructureInfoEntity entity : dataStructureList) {
 					if(rdbtnNewRadioButton.isSelected()) {
+						//用户选择的是字符型
 						ListInterface<String> list = SimpleFactory.createListImplByString(entity.getCode(), 2000);
+						//获取测试数据
 						String[] dataStrArr = secondStepDataEntity.getStringDataArr();
+						//测试数据放置到当前的数据结构中
 						for(String data : dataStrArr) {
 							list.add(data);
 						}
+						//声明并实例化数据处理结果实体
 						ResultDataEntity resultDataEntity = new ResultDataEntity();
+						long timeTotal = 0;
 						for(int y = 1; y < 4 ; y++) {
 							long time1 = System.currentTimeMillis() * 1000;
 							list.search(textByField2);
+							//存入搜索方法处理时间
 							resultDataEntity.getTimeMap().put(y, ((System.currentTimeMillis() * 1000) - time1));
+							timeTotal += time1;
 						}
+						//将数据分析处理结果存储到数据结果实体中
+						resultDataEntity.getTimeMap().put(4, (timeTotal / 3));
 						resultDataEntity.setDataStructureCode(entity.getCode());
 						resultDataEntity.setDataStructureName(entity.getDescribe());
 						resultDataEntity.setBigO(entity.getBigO());
 						resultDataEntity.setTimeUnit("ns");
 						resultDataEntity.setAnalysisText(entity.getAnalysisText());
+						//将数据结果实体存入静态数据库中
 						StaticDataEntity.RESULT_DATA_ENTITY_MAP.put(entity.getCode(), resultDataEntity);
 					}else if(rdbtnNewRadioButton_1.isSelected()) {
+						//用户选择的是数字型
 						ListInterface<Integer> list = SimpleFactory.createListImplByInteger(entity.getCode(), 2000);
+						//获取测试数据
 						Integer[] numberArr = secondStepDataEntity.getNumberDataArray();
+						//测试数据放置到当前的数据结构中
 						for(Integer data : numberArr) {
 							list.add(data);
 						}
+						//声明并实例化数据处理结果实体
 						ResultDataEntity resultDataEntity = new ResultDataEntity();
 						long timeTotal = 0;
 						for(int y = 1; y < 4 ; y++) {
@@ -677,16 +717,18 @@ public class MainApplication {
 							resultDataEntity.getTimeMap().put(y, (System.nanoTime() - time1));
 							timeTotal += time1;
 						}
+						//将数据分析处理结果存储到数据结果实体中
 						resultDataEntity.getTimeMap().put(4, (timeTotal / 3));
 						resultDataEntity.setDataStructureCode(entity.getCode());
 						resultDataEntity.setDataStructureName(entity.getDescribe());
 						resultDataEntity.setBigO(entity.getBigO());
 						resultDataEntity.setTimeUnit("ns");
 						resultDataEntity.setAnalysisText(entity.getAnalysisText());
+						//将数据结果实体存入静态数据库中
 						StaticDataEntity.RESULT_DATA_ENTITY_MAP.put(entity.getCode(), resultDataEntity);
 					}
 				}
-				
+				//将数据结果进行排序处理
 				List<ResultDataEntity> oneLevel = new ArrayList<ResultDataEntity>();
 				List<ResultDataEntity> twoLevel = new ArrayList<ResultDataEntity>();
 				Map<String,ResultDataEntity> resultDataMap = StaticDataEntity.RESULT_DATA_ENTITY_MAP;
@@ -703,6 +745,7 @@ public class MainApplication {
 				}
 				oneLevel.addAll(twoLevel);
 				
+				//数据结果遍历并拼接为输出字符串
 				StringBuffer resultSb = new StringBuffer();
 				if(oneLevel.size() > 0) {
 					for(int i = 0 ; i < oneLevel.size() ; i++) {
@@ -723,6 +766,7 @@ public class MainApplication {
 					}
 				}
 				
+				//将分析处理结果的字符串输出到文本框中
 				textArea_1.setText(resultSb.toString());
 				
 			}
@@ -730,16 +774,17 @@ public class MainApplication {
 		btnNewButton_3.setBounds(666, 60, 277, 29);
 		panel_10.add(btnNewButton_3);
 		
-		lblNewLabel_2 = new JLabel("The third step , is to enter the target character and start the analysis");
+		lblNewLabel_2 = new JLabel("Step 3 , is to enter the target character and start the analysis");
 		lblNewLabel_2.setFont(new Font("Calibri", Font.BOLD, 22));
-		lblNewLabel_2.setBounds(181, 0, 875, 21);
+		lblNewLabel_2.setBounds(300, 18, 875, 21);
 		panel_10.add(lblNewLabel_2);
 		
 		button_1 = new JButton("back");
 		button_1.addMouseListener(new MouseAdapter() {
+			//步骤三 back 按钮 单击事件
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				//切换到步骤二
 				layeredPane.setLayer(panel_10, 0);
 				layeredPane.setLayer(panel_4, 1);
 				
