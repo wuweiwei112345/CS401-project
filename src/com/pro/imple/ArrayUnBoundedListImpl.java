@@ -10,20 +10,21 @@ import com.pro.inter.ListInterface;
  */
 public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 
-	private static final int INITIAL_CAPACITY = 100;//默认初始容量
-	private Object[] elements;//元素数组
-	private int elementsNum = 0;//元素数量
-	private boolean found;//find方法查找目标元素结果 true已匹配 false未匹配
-	private int location;//find方法匹配到的元素下标
+	private static final int INITIAL_CAPACITY = 100;//Default initial capacity
+	private Object[] elements;//array for elements
+	private int elementsNum = 0;//number of elements
+	private boolean found;//find method finds the result of the target element: matched->true, unmatched->false
+	private int location;//element subscript to which the find method matches
+	private int stepNum;//Step execution times of search algorithm
 	
-	//构造函数
+	//constructor
 	public ArrayUnBoundedListImpl() {
-		//实例化元素数组用默认大小
+		//Instantiate the array of elements with the default size
 		this.elements = new Object[INITIAL_CAPACITY];
 	}
 	
 	public ArrayUnBoundedListImpl(int capacity) {
-		//实例化元素数组用size参数
+		//Instantiate the array of elements with the size parameter
 		this.elements = new Object[capacity];
 	}
 	
@@ -35,7 +36,7 @@ public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 		}
 		//The element data into elementsNum of elements
 		this.elements[elementsNum] = element;
-		//Additional element number
+		//element number + 1
 		this.elementsNum++;
 		//return true
 		return true;
@@ -69,7 +70,7 @@ public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 
 	@Override
 	public T search(T target) {
-		//Try find the target
+		//Try to find the target
 		this.find(target);
 		if(this.found) {
 			//The target element is found,return it.
@@ -82,7 +83,7 @@ public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 
 	@Override
 	public boolean contain(T target) {
-		//Try find the target
+		//Try to find the target
 		this.find(target);
 		//Return the result
 		return this.found;
@@ -96,6 +97,7 @@ public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 	public void find(T target) {
 		this.found = false;
 		this.location = 0;
+		this.stepNum = 0;
 		if(!this.isEmpty()) {
 			//The list is empty
 			int index = 0;
@@ -104,8 +106,10 @@ public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 			while(index < arrNum) {
 				//Get element of array by index
 				T element = ((T)this.elements[index]);
+				//Number of additional steps
+				this.stepNum++;
 				if(element.equals(target)) {
-					//Find is success and return the element object.
+					//Find is successful and return the element object.
 					this.found = true;
 					this.location = index;
 				}
@@ -120,7 +124,7 @@ public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 			//The list is empty
 			throw new UnderflowException("The list is empty!");
 		}
-		//Try find the target
+		//Try to find the target
 		this.find(target);
 		if(this.found) {
 			//The target element is found,delete it.
@@ -163,6 +167,11 @@ public class ArrayUnBoundedListImpl<T> implements ListInterface<T> {
 		}
 		//Return the string of sb
 		return sb.append("]").toString().replaceFirst(",", "");
+	}
+	
+	@Override
+	public int getSearchStepNum() {
+		return this.stepNum;
 	}
 
 }

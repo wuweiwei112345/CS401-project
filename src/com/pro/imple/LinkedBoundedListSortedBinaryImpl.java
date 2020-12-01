@@ -8,16 +8,16 @@ import com.pro.entity.LLNode;
  */
 public class LinkedBoundedListSortedBinaryImpl<T extends Comparable<T>> extends LinkedBoundedListSortedImpl<T>{
 
-	//构造函数
+	//constructor
 	public LinkedBoundedListSortedBinaryImpl() {
 		super();
-		//设置最大上限为默认的最大上限
+		//Set maximum to default maximum
 		this.maxSize = this.DEFAULT_MAX_SIZE;
 	}
 	
 	public LinkedBoundedListSortedBinaryImpl(int maxSize) {
 		super();
-		//最大上限设置为maxSize变量
+		//Set maximum to maxSize
 		this.maxSize = maxSize;
 	}
 	
@@ -27,39 +27,42 @@ public class LinkedBoundedListSortedBinaryImpl<T extends Comparable<T>> extends 
 	 * @return target data
 	 */
 	private void find(T target) {
-		//还原变量初始值
+		//Restore initial value of the variable
 		this.found = false;
 		this.locationNode = null;
 		this.preNode = null;
+		this.stepNum = 0;
 		if(!this.isEmpty()) {
 			//The list is empty
-			//获取头部节点引用
+			//Get the reference of head
 			LLNode<T> startNode = this.head;
-			//起始下标
+			//start subscript
 			int startIndex = 0;
-			//结束下标
+			//end subscript
 			int endIndex = this.numElements - 1;
-			//中间下标
+			//middle subscript
 			int middleIndex = 0;
-			//循环(当startIndex < endIndex == true 时停止)
+			//loop(stops when startIndex < endIndex == true)
 			while(startIndex < endIndex) {
-				//计算中间下标
+				//Calculate middle subscript
 				middleIndex = (startIndex + endIndex)/2;
-				//从起始点开始不断向后进行遍历，直到遍历到middleIndex处结束,以找到中间下标指向的节点引用
+				//Number of additional steps
+				this.stepNum++;
+				//traversal continues backwards from the starting point until it ends at middleIndex, to find the node reference to which the intermediate index points
 				while(startIndex < middleIndex) {
 					this.preNode = startNode;
 					startNode = startNode.getNext();
 					startIndex++;
 				}
-				//目标值与中间节点值进行比较
+				//target value is compared with the intermediate node value
 				if(target.compareTo(startNode.getInfo()) < 0) {
-					//缩小遍历范围,将endIndex设置为middleIndex - 1的位置
+					//Narrow the traversal scope and set endIndex to the location of middleindex-1
 					endIndex = middleIndex - 1;
 				}else if(target.compareTo(startNode.getInfo()) > 0) {
-					//缩小遍历范围,将startIndex设置为middleIndex + 1的位置
+					//Narrow the traversal scope and set startIndex to the location of middleIndex+1
 					startIndex = middleIndex + 1;
 				}else {
-					//目标值与中间节点值相等
+					//The target value is equal to the intermediate node value
 					this.found = true;
 					this.locationNode = startNode;
 					break;

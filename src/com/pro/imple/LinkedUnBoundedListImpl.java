@@ -13,66 +13,70 @@ import com.pro.entity.LLNode;
 public class LinkedUnBoundedListImpl<T extends Comparable<T>> implements ListInterface<T> {
 //	private int maxSize;
 //	private final int defaultMaxSize = 10;
-	private int numElements;//节点数量
-	private LLNode<T> head;//头节点引用
-	private boolean found;//true匹配成功 false匹配失败
-	private LLNode<T> location;//find方法匹配到的节点的引用
-	private LLNode<T> previous;//find方法匹配到的节点的前节点的引用
-	private int index;//find方法的下标值
+	private int numElements;//number of nodes
+	private LLNode<T> head;//head node reference
+	private boolean found;//matched->true, unmatched->false
+	private LLNode<T> location;//reference to the node to which the find method matches
+	private LLNode<T> previous;//reference to the previous node of the node to which the find method matches
+	private int index;//subscript of find method
+	private int stepNum;//Step execution times of search algorithm
 //	private LLNode<T> currentNode;
 //	private int listNum;
 //	private LLNode<T> elements;
 	
 	@Override
 	public boolean add(T element) throws OverflowException {
-		//声明实例化新节点
+		//Declare the instantiation of a new node
 		LLNode<T> newNode = new LLNode<T>(element);
 		if(this.isEmpty())
 		{
-			//列表为空,直接将新节点赋值给head变量
+			//list is empty,set the new node to head
 			this.head = newNode;
-			//追加元素数量
+			//number of elements + 1
 			numElements++;
-			//返回true
+			//return true
 			return true;
 		}
-		//获得头节点引用
+		//get the reference of head
 		LLNode<T> currentNode = this.head;
-		//循环
+		//loop
 		while(currentNode.getNext() != null)
 		{
-			//不断获取当前节点的下一个节点
+			//Constantly getting the next node of current node
 			currentNode = currentNode.getNext();
 		}
-		//将新节点放到尾节点的next处
+		//Place new node next to tail
 		currentNode.setNext(newNode);
-		//追加元素数量
+		//number of elements + 1
 		numElements++;
-		//返回true
+		//return true
 		return true;
 	}
 
 	private int find(T element) {
-		//初始化变量
+		//Initializing variable
 		this.found = false;
 		this.location = null;
 		this.previous = null;
+		this.stepNum = 0;
 		if(!(isEmpty()))
 		{
-			//列表不为空
-			//获取头部变量引用
+			//list is not empty
+			//get the reference of head
 			LLNode<T> currentNode = this.head;
-			//循环,查找目标值
+			//loop, find target
 			while(currentNode != null)
 			{
+				//Number of additional steps
+				this.stepNum++;
 				if(element.compareTo(currentNode.getInfo()) == 0)
 				{
-					//目标值与对比值相等
+					//target value = value to be compared
 					this.found = true;
 					this.location = currentNode;
 					break;
 				}else{
-					//目标值与对比值不相等
+					//target value != value to be compared
 					this.previous = currentNode;
 					currentNode = currentNode.getNext();
 				}
@@ -83,37 +87,37 @@ public class LinkedUnBoundedListImpl<T extends Comparable<T>> implements ListInt
 	
 	@Override
 	public T search(T target) {
-		//调用find方法查找目标元素
+		//call find method to find target
 		this.find(target);
 		if(this.found)
 		{
-			//已匹配,返回匹配对象info属性值
+			//Matched, returns the value of the matched object's Info property
 			return this.location.getInfo();
 		}else{
-			//未匹配,返回null
+			//unmatched, return null
 			return null;
 		}
 	}
 	
 	@Override
 	public boolean contain(T target) {
-		//调用find方法查找目标元素
+		//call find method to find target
 		this.search(target);
-		//返回查找结果
+		//Return search results
 		return this.found;
 	}
 
 	@Override
 	public boolean remove(T target) throws UnderflowException {
-		//调用find方法查找目标元素
+		//call find method to find target
 		this.find(target);
         if(this.found == true)
         {
-        	//已匹配,删除当前节点
+        	//matched, delete current node
         	previous.setNext(location.getNext());
         	return true;
         }else {
-        	//未匹配,则返回false
+        	//unmatched, return false
         	return false;
         }
 	}
@@ -134,22 +138,28 @@ public class LinkedUnBoundedListImpl<T extends Comparable<T>> implements ListInt
 	}
 	
 	public String toString() {
-    	//声明并实例化StringBuffer实例
+		//Declare and instantiate a StringBuffer instance
     	StringBuffer sb = new StringBuffer("[");
-    	//获取头节点引用
+    	//get the reference of head node
         LLNode<T> currentNode = this.head;
-        //循环
+        //loop
         while(currentNode != null)
    		{
-        	//拼接数据
+        	//splicing data
    			sb.append(",").append(currentNode.getInfo());
-   			//获取下一个节点引用
+   			//Get the next node reference
    			currentNode = currentNode.getNext();
    		}
-        //拼接结束符号
+        //splice the end symbol
         sb.append("]");
-        //返回数据字符
+        //return data character
         return sb.toString().replaceFirst(",", "");
     }
+	
+	@Override
+	public int getSearchStepNum() {
+		return this.stepNum;
+	}
+	
 }
 

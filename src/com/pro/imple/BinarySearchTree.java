@@ -14,11 +14,12 @@ import com.pro.inter.BSTInterface;
  */
 public class BinarySearchTree<T> implements BSTInterface<T> {
 
-	private BSTTreeNode<T> root;//树的根节点
-	private Comparator<T> comp;//比较器
-	private boolean found;//true 表示匹配成功 false表示匹配失败
+	private BSTTreeNode<T> root;//root node of the tree
+	private Comparator<T> comp;//comparator
+	private boolean found;//matched->true, unmatched->false
+	private int stepNum;//Step execution times of search algorithm
 	
-	//构造函数
+	//constructor
 	public BinarySearchTree() {
 		this.root = null;
 		comp = new Comparator<T>() {
@@ -61,6 +62,7 @@ public class BinarySearchTree<T> implements BSTInterface<T> {
 	@Override
 	public T search(T target) {
 		//Cell the get method.
+		this.stepNum = 0;
 		return this.get(target, this.root);
 	}
 	
@@ -71,6 +73,8 @@ public class BinarySearchTree<T> implements BSTInterface<T> {
 	 * @return true is found and false is not found
 	 */
 	private T get(T target,BSTTreeNode<T> node) {
+		//Number of additional steps
+		this.stepNum++;
 		if(node == null) {
 			return null;
 		}else if(this.comp.compare(target, node.getInfo()) < 0) {
@@ -151,11 +155,11 @@ public class BinarySearchTree<T> implements BSTInterface<T> {
 			//Return the left
 			return node.getLeft();
 		}else {
-			//When the node have left node and right node.
+			//When the node has left node and right node.
 			data = this.getPredecessor(node.getLeft());
 			node.setInfo(data);
 			node.setLeft(this.recRemove(data, node.getLeft()));
-			//Return the node
+			//Return node
 			return node;
 		}
 	}
@@ -203,7 +207,7 @@ public class BinarySearchTree<T> implements BSTInterface<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		//Cell the getIterator method by inorder
+		//Call getIterator method by inorder
 		return getIterator(BSTInterface.Traversal.Inorder);
 	}
 
@@ -282,6 +286,11 @@ public class BinarySearchTree<T> implements BSTInterface<T> {
 		this.postOrder(node.getLeft(),infoArr);
 		this.postOrder(node.getRight(),infoArr);
 		infoArr.add(node.getInfo());
+	}
+	
+	@Override
+	public int getSearchStepNum() {
+		return this.stepNum;
 	}
 
 }

@@ -11,25 +11,26 @@ import com.pro.inter.ListInterface;
  */
 public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
 	
-	//构造函数
+	//constructor
 	public LinkedBoundedListSortedImpl() {
-		//设置最大上限为默认的最大上限
+		//Set maximum to default maximum
 		this.maxSize = DEFAULT_MAX_SIZE;
 	}
 	
 	public LinkedBoundedListSortedImpl(int maxSize) {
-		//最大上限设置为maxSize变量
+		//Set maximum to maxSize
 		this.maxSize = maxSize;
 	}
 
-	protected static final int DEFAULT_MAX_SIZE = 10;//默认列表元素最大上限
-	protected int maxSize = 0;//列表最大元素上限
-	protected LLNode<T> head;//头部节点引用
-	protected boolean found;//true已匹配 false未匹配
-	protected LLNode<T> locationNode;//已匹配到的节点引用
-	protected LLNode<T> preNode;//前节点引用
-	protected int numElements;//列表节点数量
-	protected int location;//已匹配到的节点下标
+	protected static final int DEFAULT_MAX_SIZE = 10;//Default list element maximum limit
+	protected int maxSize = 0;//maximum element limit of the list
+	protected LLNode<T> head;//reference of head node
+	protected boolean found;//matched->true, unmatched->false
+	protected LLNode<T> locationNode;//matched node reference
+	protected LLNode<T> preNode;//previous node reference
+	protected int numElements;//number of nodes
+	protected int location;//subscript of matched nodes
+	protected int stepNum;//Step execution times of search algorithm
 	
 	@Override
 	public boolean add(T element) throws OverflowException {
@@ -38,24 +39,24 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 		}
 		if(this.isEmpty())
 		{
-			//列表为空,实例化新节点对象并赋值给head变量
+			//list is empty, new node is instantiated and set to head
 			this.head = new LLNode<T>(element);
 		}else {
-			//调用find方法查找element适合插入的位置
+			//Call find method to find the appropriate insertion location for element
 			this.find(element);
-			//声明并实例化新节点
+			//Declare and instantiate new node
 			LLNode<T> newNode = new LLNode<T>(element);
 			if(this.locationNode == null) {
-				//将新节点作为头部插入到列表中
+				//Insert new node into the list as head
 				newNode.setNext(this.head);
 				this.head = newNode;
 			}else {
-				//将新节点插入到列表中
+				//Insert new node into the list
 				newNode.setNext(this.locationNode.getNext());
 				this.locationNode.setNext(newNode);
 			}
 		}
-		//追加节点数量
+		//number of elements + 1
 		this.numElements++;
 		return true;
 	}
@@ -63,10 +64,10 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 	@Override
 	public T search(T target) {
 		if(!(isEmpty())){
-			//列表不为空,调用find方法查找目标对象
+			//list is not empty, call find method to find target
 			this.find(target);
 			if(this.found) {
-				//已匹配直接返回匹配节点info值
+				//matched, return the info of matching node
 				return locationNode.getInfo();
 			}
 		}
@@ -77,12 +78,12 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 	@Override
 	public boolean contain(T target) {
 		if(!(isEmpty())){
-			//列表不为空,调用find方法查找目标对象
+			//list is not empty, call find method to find target
 			this.find(target);
-			//返回查找结果
+			//Return search result
 			return this.found;
 		}
-		//列表为空,直接返回false
+		//list is empty, return false
 		return false;
 	}
 
@@ -92,12 +93,12 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 		{
 			throw new OverflowException("The list is full.");
 		}else {
-			//列表不为空,调用find方法搜索目标元素
+			//list is not empty, call find method to search for target
 			this.find(target);
 			if(this.found) {
-				//已匹配,删除当前节点
+				//if matched, delete current node
 				preNode.setNext(this.locationNode.getNext());
-				//元素数量递减
+				//number of elements - 1
 				this.numElements--;
 			}
 		}
@@ -112,37 +113,40 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 	private void find(T target) {
 		if(!(isEmpty()))
 		{
-			//列表不为空,还原变量初始值
+			//list is not empty, restoring the initial value of the variable
 			this.found = false;
 			this.location = -1;
 			this.preNode = null;
 			this.locationNode = null;
-			//获取头部节点引用
+			this.stepNum = 0;
+			//get the reference of head
 			LLNode<T> currentNode = this.head;
-			//初始化index变量
+			//Initialize index variable
 			int index = 0;
-			//循环(当currentNode != null不成立时停止)
+			//loop(stops when currentNode = null)
 			while(currentNode != null)
 			{
+				//Number of additional steps
+				this.stepNum++;
 				if(target.compareTo(currentNode.getInfo()) == 0)
 				{
-					//目标值等于对比值
+					//target value = value to be compared
 					this.found = true;
 					this.location=index;
 					this.locationNode = currentNode;
-					//结束循环
+					//end loop
 					break;
 				}else if(target.compareTo(currentNode.getInfo()) > 0)
 				{
-					//目标值大于对比值
+					//target value > value to be compared
 					this.location = index;
 					this.locationNode = currentNode;
 				}
-				//当前节点赋值给前节点引用
+				//set the value of current node to the previous node reference
 				this.preNode = currentNode;
-				//获得当前节点的下一个节点
+				//Get the next node of the current node
 				currentNode = currentNode.getNext();
-				//index递增
+				//index + 1
 				index++;
 			}
 		}
@@ -164,22 +168,27 @@ public class LinkedBoundedListSortedImpl<T extends Comparable<T>> implements Lis
 	}
 	
 	public String toString() {
-    	//声明并实例化StringBuffer实例
+		//Declare and instantiate a StringBuffer instance
     	StringBuffer sb = new StringBuffer("[");
-    	//获取头节点引用
+    	//get the reference of head node
         LLNode<T> currentNode = this.head;
-        //循环
+        //loop
         while(currentNode != null)
    		{
-        	//拼接数据
+        	//splicing data
    			sb.append(",").append(currentNode.getInfo());
-   			//获取下一个节点引用
+   			//Get the next node reference
    			currentNode = currentNode.getNext();
    		}
-        //拼接结束符号
+        //splice the end symbol
         sb.append("]");
-        //返回数据字符
+        //return data character
         return sb.toString().replaceFirst(",", "");
     }
+	
+	@Override
+	public int getSearchStepNum() {
+		return this.stepNum;
+	}
 
 }

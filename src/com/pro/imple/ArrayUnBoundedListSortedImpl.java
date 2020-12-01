@@ -10,20 +10,21 @@ import com.pro.inter.ListInterface;
  */
 public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements ListInterface<T> {
 
-	protected static final int INITIAL_CAPACITY = 100;//默认初始容量
-	protected Object[] elements;//元素数组
-	protected int elementsNum = 0;//元素数量
-	protected boolean found;//find方法查找目标元素结果 true已匹配 false未匹配
-	protected int location;//find方法匹配到的元素下标
+	protected static final int INITIAL_CAPACITY = 100;//Default initial capacity
+	protected Object[] elements;//array for elements
+	protected int elementsNum = 0;//number of elements
+	protected boolean found;//find method finds the result of the target element: matched->true, unmatched->false
+	protected int location;//element subscript to which the find method matches
+	protected int stepNum;//Step execution times of search algorithm
 	
-	//构造函数
+	//constructor
 	public ArrayUnBoundedListSortedImpl() {
-		//实例化元素数组用默认大小
+		//Instantiate the array of elements with the default size
 		this.elements = new Object[INITIAL_CAPACITY];
 	}
 	
 	public ArrayUnBoundedListSortedImpl(int capacity) {
-		//实例化元素数组用size参数
+		//Instantiate the array of elements with the size parameter
 		this.elements = new Object[capacity];
 	}
 	
@@ -40,9 +41,9 @@ public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements Li
 			this.elements[i + 1] = this.elements[i];
 			this.elements[i] = null;
 		}
-		//The element data into elementsNum of elements
+		//Insert new element into location
 		this.elements[this.location] = element;
-		//Additional element number
+		//element number + 1
 		this.elementsNum++;
 		//return true
 		return true;
@@ -100,7 +101,7 @@ public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements Li
 			//The list is empty
 			throw new UnderflowException("The list is empty!");
 		}
-		//Try find the target
+		//Try to find the target
 		this.find(target);
 		if(this.found) {
 			//The target element is found,delete it.
@@ -119,6 +120,7 @@ public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements Li
 	private void find(T target) {
 		this.found = false;
 		this.location = 0;
+		this.stepNum = 0;
 		if(!this.isEmpty()) {
 			//The list is empty,binary search
 			int first = 0;
@@ -126,6 +128,8 @@ public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements Li
 			int middleIndex = 0;
 			while(first <= last) {
 				middleIndex = (first + last) / 2;
+				//Number of additional steps
+				this.stepNum++;
 				if(target.compareTo((T)this.elements[middleIndex]) < 0) {
 					last = middleIndex - 1;
 				}else if(target.compareTo((T)this.elements[middleIndex]) > 0) {
@@ -173,6 +177,11 @@ public class ArrayUnBoundedListSortedImpl<T extends Comparable<T>> implements Li
 		}
 		//Return the string of sb
 		return sb.append("]").toString().replaceFirst(",", "");
+	}
+	
+	@Override
+	public int getSearchStepNum() {
+		return this.stepNum;
 	}
 
 }

@@ -8,7 +8,7 @@ public class ArrayUnBoundedListSortedLineImpl<T extends Comparable<T>> extends A
 	
 	public ArrayUnBoundedListSortedLineImpl() {
 		super();
-		//实例化元素数组用默认大小
+		//Instantiate the array of elements with the default size
 		this.elements = new Object[INITIAL_CAPACITY];
 	}
 	
@@ -18,27 +18,30 @@ public class ArrayUnBoundedListSortedLineImpl<T extends Comparable<T>> extends A
 	 * @return target data
 	 */
 	private void find(T target) {
-		//还原found 和 location 变量的 初始值
+		//Restore the initial values of the found and location variables
 		this.found = false;
 		this.location = 0;
+		this.stepNum = 0;
 		if(!this.isEmpty()) {
-			//列表不为空的情况
-			//获取当前元素的数量
+			//when the array is not empty
+			//Gets the current number of elements
 			int elementsNum = this.elementsNum;
-			//声明并初始化index变量
+			//Declare and initialize the index variable
 			int index = 0;
-			//循环，过程中对比目标值和对比值
+			//loop and compare target and the value to compare
 			while(index < elementsNum) {
+				//Number of additional steps
+				this.stepNum++;
 				int result = target.compareTo((T)this.elements[index]);
 				if(result == 0) {
-					//两者相等
+					//if equals
 					this.found = true;
 					this.location = index;
 				}else if(result > 0) {
-					//目标值 大于 对比值
+					//target > the value to compare
 					this.location = index + 1;
 				}
-				//index变量追加
+				//index + 1
 				index++;
 			}
 		}
