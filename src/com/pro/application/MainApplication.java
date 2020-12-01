@@ -56,7 +56,7 @@ import javax.swing.JTextArea;
 
 /**
  * @describe Window program
- * @author Wei Wu,Ye Yu 
+ * @author Wei Wu,Ye Yu
  */
 public class MainApplication {
 
@@ -696,16 +696,19 @@ public class MainApplication {
 						//声明并实例化数据处理结果实体
 						ResultDataEntity resultDataEntity = new ResultDataEntity();
 						long timeTotal = 0;
+						int stepNumTotal = 0;
 						for(int y = 1; y < 4 ; y++) {
 							long time1 = System.nanoTime();
 							list.search(textByField2);
-							//存入搜索方法处理时间
 							long time2 = (System.nanoTime() - time1);
 							resultDataEntity.getTimeMap().put(y, time2);
+							resultDataEntity.getStepNumMap().put(y, list.getSearchStepNum());
 							timeTotal += time2;
+							stepNumTotal += list.getSearchStepNum();
 						}
 						//将数据分析处理结果存储到数据结果实体中
 						resultDataEntity.getTimeMap().put(4, (timeTotal / 3));
+						resultDataEntity.getStepNumMap().put(4, (stepNumTotal / 3));
 						resultDataEntity.setDataStructureCode(entity.getCode());
 						resultDataEntity.setDataStructureName(entity.getDescribe());
 						resultDataEntity.setBigO(entity.getBigO());
@@ -725,15 +728,19 @@ public class MainApplication {
 						//声明并实例化数据处理结果实体
 						ResultDataEntity resultDataEntity = new ResultDataEntity();
 						long timeTotal = 0;
+						int stepNumTotal = 0;
 						for(int y = 1; y < 4 ; y++) {
 							long time1 = System.nanoTime();
 							list.search(Integer.parseInt(textByField2));
 							long time2 = (System.nanoTime() - time1);
 							resultDataEntity.getTimeMap().put(y, time2);
+							resultDataEntity.getStepNumMap().put(y, list.getSearchStepNum());
 							timeTotal += time2;
+							stepNumTotal += list.getSearchStepNum();
 						}
 						//将数据分析处理结果存储到数据结果实体中
 						resultDataEntity.getTimeMap().put(4, (timeTotal / 3));
+						resultDataEntity.getStepNumMap().put(4, (stepNumTotal / 3));
 						resultDataEntity.setDataStructureCode(entity.getCode());
 						resultDataEntity.setDataStructureName(entity.getDescribe());
 						resultDataEntity.setBigO(entity.getBigO());
@@ -778,12 +785,13 @@ public class MainApplication {
 						ResultDataEntity entity = resultArr[i];
 						resultSb.append("No " + (i + 1) + ". It's " + entity.getDataStructureName()).append("\n");
 						Iterator<Long> timeIterator = entity.getTimeMap().values().iterator();
+						Iterator<Integer> stepNumIterator = entity.getStepNumMap().values().iterator();
 						int x = 1;
 						while(timeIterator.hasNext()) {
 							if(x < 4) {
-								resultSb.append("Execution time of " + x + " : " + timeIterator.next() + entity.getTimeUnit()).append("\n");
+								resultSb.append("Execution time of " + x + " : " + timeIterator.next() + entity.getTimeUnit()).append(" step number: ").append(stepNumIterator.next()).append("\n");
 							}else {
-								resultSb.append("Execution avg time of " + " : " + timeIterator.next() + entity.getTimeUnit()).append("\n");
+								resultSb.append("Execution avg time " + " : " + timeIterator.next() + entity.getTimeUnit()).append(" step number: ").append(stepNumIterator.next()).append("\n");
 							}
 							x++;
 						}
